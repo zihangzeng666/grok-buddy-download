@@ -12,6 +12,6 @@ This repository hosts **binaries and the download site only**. Application sourc
 
 ## Install
 
-1. Download `GrokBuddy-0.2.0.dmg`
+1. Download `GrokBuddy-0.2.1.dmg`
 2. Drag **Grok Buddy** to Applications
 3. Open the app and complete first-run setup if prompted
