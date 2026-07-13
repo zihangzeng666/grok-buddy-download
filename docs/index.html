@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Grok Buddy — Floating companion for Grok CLI</title>
+  <meta name="description" content="Grok Buddy is a floating macOS pet that watches Grok CLI: live status, ETA, finish alerts, side chat, and smooth first-run setup." />
+  <meta property="og:title" content="Grok Buddy" />
+  <meta property="og:description" content="Floating macOS companion for Grok CLI — status, ETA, side chat." />
+  <meta property="og:image" content="assets/icon-256.png" />
+  <link rel="icon" href="assets/icon-256.png" type="image/png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a class="brand" href="#">
+      <img src="assets/icon-256.png" alt="" width="36" height="36" />
+      <span>Grok Buddy</span>
+    </a>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#install">Install</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn btn-sm" href="https://github.com/zihangzeng666/grok-buddy-download/releases/tag/v0.2.0">Download</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">macOS · Signed &amp; notarized · v0.2.0</p>
+        <h1>A floating pet for your <span class="grad">Grok CLI</span></h1>
+        <p class="lede">
+          Live status, progress &amp; ETA, finish reminders, and a one-click side chat —
+          so you always know what Grok is doing without staring at the terminal.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://github.com/zihangzeng666/grok-buddy-download/releases/download/v0.2.0/GrokBuddy-0.2.0.dmg">
+            Download for Mac
+            <span class="btn-sub">DMG · ~1.8&nbsp;MB</span>
+          </a>
+          <a class="btn btn-ghost" href="https://github.com/zihangzeng666/grok-buddy-download/releases/download/v0.2.0/GrokBuddy-0.2.0.zip">
+            Get ZIP
+          </a>
+          <a class="btn btn-ghost" href="https://github.com/zihangzeng666/grok-buddy-download">
+            GitHub
+          </a>
+        </div>
+        <p class="fine">Requires macOS&nbsp;14+ · First launch can install Grok CLI for you</p>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="pet-card">
+          <div class="pet-chrome">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="chrome-title">grok-buddy · live</span>
+          </div>
+          <div class="speech">
+            <span class="speech-label">Buddy says</span>
+            Thinking hard about the next step…
+          </div>
+          <img class="pet-icon" src="assets/icon-256.png" alt="" />
+          <div class="status-mock">
+            <div class="status-top">
+              <span class="status-name">Thinking</span>
+              <span class="status-pct">~42%</span>
+            </div>
+            <div class="bar"><i style="width:42%"></i></div>
+            <div class="status-meta">
+              <span>Stage: Reasoning</span>
+              <span>1:20 ETA ~2m</span>
+            </div>
+            <div class="status-actions">
+              <span>reply</span><span>menu</span><span>hide</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <h2>Built for flow, not another window to babysit</h2>
+      <p class="section-lede">A tiny always-on companion that stays out of the way until Grok needs you.</p>
+      <div class="grid features">
+        <article class="card">
+          <div class="card-icon">◉</div>
+          <h3>Live status</h3>
+          <p>Sees thinking, tools, writing, and permissions from Grok’s session stream.</p>
+        </article>
+        <article class="card">
+          <div class="card-icon">%</div>
+          <h3>Progress &amp; ETA</h3>
+          <p>Honest percentage and time estimates — stays on <strong>Done</strong> when the last job finishes.</p>
+        </article>
+        <article class="card">
+          <div class="card-icon">◎</div>
+          <h3>Finish alerts</h3>
+          <p>Visual celebration plus optional macOS notifications when a turn completes.</p>
+        </article>
+        <article class="card">
+          <div class="card-icon">⌘</div>
+          <h3>Side chat</h3>
+          <p>Double-click the pet for a quick Q&amp;A Grok session — customize via <code>AGENTS.md</code>.</p>
+        </article>
+        <article class="card">
+          <div class="card-icon">→</div>
+          <h3>Reply</h3>
+          <p>Send a message into the live Grok terminal from the floating UI when you’re away from it.</p>
+        </article>
+        <article class="card">
+          <div class="card-icon">✦</div>
+          <h3>First-run setup</h3>
+          <p>Detects Grok CLI and can run the official installer so new users aren’t stuck at “command not found”.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="install" class="section section-alt">
+      <h2>Install in under a minute</h2>
+      <ol class="steps">
+        <li>
+          <span class="step-n">1</span>
+          <div>
+            <h3>Download</h3>
+            <p>Get the <a href="https://github.com/zihangzeng666/grok-buddy-download/releases/download/v0.2.0/GrokBuddy-0.2.0.dmg">DMG</a> or <a href="https://github.com/zihangzeng666/grok-buddy-download/releases/download/v0.2.0/GrokBuddy-0.2.0.zip">ZIP</a> from the release page.</p>
+          </div>
+        </li>
+        <li>
+          <span class="step-n">2</span>
+          <div>
+            <h3>Drag to Applications</h3>
+            <p>Open the DMG and drag <strong>Grok Buddy</strong> into Applications.</p>
+          </div>
+        </li>
+        <li>
+          <span class="step-n">3</span>
+          <div>
+            <h3>Open &amp; set up</h3>
+            <p>Launch the app. If Grok CLI is missing, tap <strong>Install for me</strong> (official xAI installer) or paste the command yourself.</p>
+          </div>
+        </li>
+        <li>
+          <span class="step-n">4</span>
+          <div>
+            <h3>Work</h3>
+            <p>Run <code>grok</code> in a project. Buddy watches in the corner. Double-click the pet for side chat.</p>
+          </div>
+        </li>
+      </ol>
+      <div class="terminal-block">
+        <div class="term-chrome">official CLI install (if you prefer Terminal)</div>
+        <pre><code>curl -fsSL https://x.ai/cli/install.sh | bash</code></pre>
+      </div>
+    </section>
+
+    <section id="faq" class="section">
+      <h2>FAQ</h2>
+      <div class="faq">
+        <details open>
+          <summary>Is this the Mac App Store build?</summary>
+          <p>No — this is a <strong>Developer ID signed &amp; notarized</strong> direct download. App Store needs a sandboxed edition later.</p>
+        </details>
+        <details>
+          <summary>Does Buddy send my code to a server?</summary>
+          <p>Buddy reads local Grok session files under <code>~/.grok/</code> and talks to localhost for hooks. Your project work still goes through Grok CLI / xAI as usual.</p>
+        </details>
+        <details>
+          <summary>macOS blocks the app?</summary>
+          <p>This release is notarized. If something’s off, right-click → Open once, or re-download from the official release link.</p>
+        </details>
+        <details>
+          <summary>Reply doesn’t type / no cursor?</summary>
+          <p>Click the dark input field so Buddy becomes the key window. Allow Automation for Terminal/iTerm if macOS asks when sending.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="section cta-final">
+      <img src="assets/icon-256.png" alt="" width="72" height="72" />
+      <h2>Ship with a pet on your desktop</h2>
+      <p>Signed. Notarized. Ready for other Macs.</p>
+      <a class="btn btn-primary" href="https://github.com/zihangzeng666/grok-buddy-download/releases/tag/v0.2.0">
+        Get v0.2.0
+      </a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>
+      <strong>Grok Buddy</strong> · downloads on
+      <a href="https://github.com/zihangzeng666/grok-buddy-download">GitHub</a>
+      · Grok CLI by <a href="https://x.ai">xAI</a>
+    </p>
+    <p class="fine">Not affiliated with xAI. “Grok” is a trademark of its respective owner.</p>
+  </footer>
+</body>
+</html>
