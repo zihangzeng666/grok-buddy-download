@@ -411,6 +411,8 @@
       applyTheme(mood);
       if (speechEl) speechEl.textContent = mood.speech;
       if (moodEl) moodEl.textContent = mood.label;
+      const chrome = document.getElementById("chrome-mood");
+      if (chrome) chrome.textContent = mood.label;
       if (statusName) statusName.textContent = mood.label;
       if (statusPct) statusPct.textContent = mood.pct;
       if (statusStage) statusStage.textContent = "Stage: " + mood.stage;
