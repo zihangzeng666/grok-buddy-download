@@ -1,14 +1,23 @@
 :root {
+  /* Mood palette vars — driven by JS (same hues as PetMood) */
+  --mood-primary: #73d9f2;
+  --mood-secondary: #408cd9;
+  --mood-belly: #bff2ff;
+  --mood-outline: #26598c;
+  --mood-accent: #ff8cc0;
+  --mood-glow: #8cf2ff;
+  --mood-cheek: #ff99b3;
+
   --bg: #070b09;
   --bg-elev: #0d1411;
   --panel: #101a15;
   --text: #e8f5ec;
   --muted: #8aa896;
-  --green: #3df08a;
-  --green-dim: #1f9a55;
-  --cyan: #4de8f0;
-  --amber: #f0c14d;
-  --border: rgba(61, 240, 138, 0.22);
+  --green: var(--mood-primary);
+  --green-dim: var(--mood-secondary);
+  --cyan: var(--mood-glow);
+  --amber: var(--mood-accent);
+  --border: color-mix(in srgb, var(--mood-primary) 28%, transparent);
   --radius: 16px;
   --font: "SF Pro Text", "Segoe UI", system-ui, -apple-system, sans-serif;
   --mono: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
@@ -32,14 +41,17 @@ body {
   background: var(--bg);
   line-height: 1.55;
   min-height: 100vh;
+  transition: background 0.8s ease;
 }
 
 a {
-  color: var(--cyan);
+  color: var(--mood-glow);
   text-decoration: none;
+  transition: color 0.4s ease;
 }
 a:hover {
   text-decoration: underline;
+  color: var(--mood-primary);
 }
 
 code {
@@ -54,24 +66,36 @@ code {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(61, 240, 138, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(61, 240, 138, 0.04) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--mood-primary) 8%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--mood-primary) 8%, transparent) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: radial-gradient(ellipse 80% 60% at 50% 20%, #000 20%, transparent 75%);
   pointer-events: none;
   z-index: 0;
+  transition: background-image 0.6s ease;
 }
 
 .bg-glow {
   position: fixed;
-  width: 60vw;
-  height: 50vh;
-  top: -10%;
-  left: 20%;
-  background: radial-gradient(circle, rgba(61, 240, 138, 0.18), transparent 65%);
-  filter: blur(40px);
+  width: 70vw;
+  height: 55vh;
+  top: -12%;
+  left: 15%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--mood-glow) 35%, transparent),
+    color-mix(in srgb, var(--mood-primary) 12%, transparent) 45%,
+    transparent 70%
+  );
+  filter: blur(48px);
   pointer-events: none;
   z-index: 0;
+  animation: glow-drift 12s ease-in-out infinite alternate;
+}
+
+@keyframes glow-drift {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(4%, 6%) scale(1.08); }
 }
 
 .nav,
@@ -100,6 +124,7 @@ main,
   letter-spacing: -0.02em;
   text-decoration: none;
 }
+.brand canvas,
 .brand img {
   border-radius: 10px;
   box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0, 0, 0, 0.4);
@@ -133,12 +158,13 @@ main,
   display: inline-block;
   font-family: var(--mono);
   font-size: 0.75rem;
-  color: var(--green);
-  background: rgba(61, 240, 138, 0.08);
+  color: var(--mood-primary);
+  background: color-mix(in srgb, var(--mood-primary) 12%, transparent);
   border: 1px solid var(--border);
   padding: 0.35rem 0.7rem;
   border-radius: 999px;
   margin: 0 0 1rem;
+  transition: color 0.5s ease, background 0.5s ease, border-color 0.5s ease;
 }
 
 h1 {
@@ -150,10 +176,18 @@ h1 {
 }
 
 .grad {
-  background: linear-gradient(120deg, var(--green), var(--cyan));
+  background: linear-gradient(120deg, var(--mood-primary), var(--mood-glow), var(--mood-accent));
+  background-size: 200% 200%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  animation: grad-shift 6s ease infinite;
+}
+
+@keyframes grad-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .lede {
@@ -182,7 +216,7 @@ h1 {
   font-size: 0.95rem;
   text-decoration: none;
   border: 1px solid transparent;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.4s ease, background 0.5s ease, border-color 0.5s ease;
 }
 .btn:hover {
   transform: translateY(-1px);
@@ -194,12 +228,12 @@ h1 {
   font-size: 0.85rem;
 }
 .btn-primary {
-  background: linear-gradient(145deg, #3df08a, #22c36a);
+  background: linear-gradient(145deg, var(--mood-primary), var(--mood-secondary));
   color: #04140a;
-  box-shadow: 0 10px 30px rgba(61, 240, 138, 0.25);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--mood-primary) 35%, transparent);
 }
 .btn-primary:hover {
-  box-shadow: 0 14px 36px rgba(61, 240, 138, 0.35);
+  box-shadow: 0 14px 36px color-mix(in srgb, var(--mood-glow) 40%, transparent);
 }
 .btn-sub {
   font-size: 0.72rem;
@@ -221,7 +255,7 @@ h1 {
   margin: 0;
 }
 
-/* Mock UI */
+/* Live pet card */
 .hero-visual {
   display: flex;
   justify-content: center;
@@ -236,8 +270,10 @@ h1 {
   box-shadow:
     0 0 0 1px rgba(0, 0, 0, 0.4),
     0 30px 60px rgba(0, 0, 0, 0.55),
+    0 0 40px color-mix(in srgb, var(--mood-glow) 20%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
   animation: float 5s ease-in-out infinite;
+  transition: border-color 0.5s ease, box-shadow 0.5s ease;
 }
 
 @keyframes float {
@@ -263,53 +299,76 @@ h1 {
 .dot.y { background: #febc2e; }
 .dot.g { background: #28c840; }
 .chrome-title { margin-left: 0.4rem; }
+.chrome-mood {
+  margin-left: auto;
+  color: var(--mood-primary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition: color 0.4s ease;
+}
 
 .speech {
   background: rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(61, 240, 138, 0.35);
+  border: 1px solid color-mix(in srgb, var(--mood-primary) 40%, transparent);
   border-radius: 10px;
   padding: 0.55rem 0.7rem;
   font-size: 0.82rem;
-  color: var(--green);
+  color: var(--mood-primary);
   margin-bottom: 0.75rem;
   font-family: var(--mono);
+  min-height: 2.8rem;
+  transition: color 0.5s ease, border-color 0.5s ease;
 }
 .speech-label {
   display: block;
   font-size: 0.65rem;
-  color: var(--amber);
+  color: var(--mood-accent);
   margin-bottom: 0.2rem;
+  transition: color 0.5s ease;
 }
 
-.pet-icon {
-  display: block;
-  width: 120px;
-  height: 120px;
-  margin: 0.4rem auto 0.9rem;
-  border-radius: 28px;
-  filter: drop-shadow(0 0 20px rgba(61, 240, 138, 0.35));
+.pet-canvas-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 0.2rem 0 0.85rem;
+  filter: drop-shadow(0 0 18px color-mix(in srgb, var(--mood-glow) 45%, transparent));
+  transition: filter 0.5s ease;
+}
+
+#pet-canvas {
+  width: 144px;
+  height: 144px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
 .status-mock {
   background: rgba(0, 0, 0, 0.55);
-  border: 1px solid rgba(61, 240, 138, 0.4);
+  border: 1px solid color-mix(in srgb, var(--mood-primary) 45%, transparent);
   border-radius: 10px;
   padding: 0.65rem 0.75rem;
   font-family: var(--mono);
   font-size: 0.72rem;
+  transition: border-color 0.5s ease;
 }
 .status-top {
   display: flex;
   justify-content: space-between;
   margin-bottom: 0.4rem;
 }
-.status-name { color: var(--cyan); font-weight: 700; }
+.status-name {
+  color: var(--mood-glow);
+  font-weight: 700;
+  transition: color 0.4s ease;
+}
 .status-pct {
   color: #fff;
-  background: rgba(61, 240, 138, 0.25);
-  border: 1px solid var(--green);
+  background: color-mix(in srgb, var(--mood-primary) 30%, transparent);
+  border: 1px solid var(--mood-primary);
   padding: 0 0.35rem;
   border-radius: 4px;
+  transition: background 0.4s ease, border-color 0.4s ease;
 }
 .bar {
   height: 7px;
@@ -320,7 +379,14 @@ h1 {
 .bar i {
   display: block;
   height: 100%;
-  background: var(--green);
+  background: linear-gradient(90deg, var(--mood-secondary), var(--mood-primary), var(--mood-glow));
+  background-size: 200% 100%;
+  animation: bar-shine 2.5s linear infinite;
+  transition: width 0.6s ease;
+}
+@keyframes bar-shine {
+  from { background-position: 0% 0; }
+  to { background-position: 200% 0; }
 }
 .status-meta {
   display: flex;
@@ -333,14 +399,17 @@ h1 {
   gap: 0.4rem;
 }
 .status-actions span {
-  background: rgba(61, 240, 138, 0.85);
+  background: color-mix(in srgb, var(--mood-primary) 90%, #000);
   color: #04140a;
   padding: 0.15rem 0.4rem;
   border-radius: 3px;
   font-weight: 700;
   font-size: 0.65rem;
+  transition: background 0.4s ease;
 }
-.status-actions span:nth-child(2) { background: var(--green); }
+.status-actions span:nth-child(2) {
+  background: var(--mood-glow);
+}
 .status-actions span:nth-child(3) {
   background: transparent;
   color: var(--muted);
@@ -353,10 +422,15 @@ h1 {
   padding: 3.5rem 1.25rem;
 }
 .section-alt {
-  background: linear-gradient(180deg, rgba(16, 26, 21, 0.9), transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--mood-primary) 6%, #0a100d),
+    transparent
+  );
   border-block: 1px solid var(--border);
   max-width: none;
   padding-inline: 0;
+  transition: background 0.8s ease, border-color 0.5s ease;
 }
 .section-alt > * {
   max-width: var(--max);
@@ -390,17 +464,19 @@ h2 {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.25rem;
-  transition: border-color 0.15s ease, transform 0.15s ease;
+  transition: border-color 0.4s ease, transform 0.15s ease, box-shadow 0.4s ease;
 }
 .card:hover {
-  border-color: rgba(61, 240, 138, 0.45);
+  border-color: color-mix(in srgb, var(--mood-primary) 55%, transparent);
   transform: translateY(-2px);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--mood-primary) 12%, transparent);
 }
 .card-icon {
   font-family: var(--mono);
-  color: var(--green);
+  color: var(--mood-primary);
   font-size: 1.1rem;
   margin-bottom: 0.6rem;
+  transition: color 0.5s ease;
 }
 .card h3 {
   margin: 0 0 0.4rem;
@@ -428,17 +504,19 @@ h2 {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1rem 1.15rem;
+  transition: border-color 0.5s ease;
 }
 .step-n {
   width: 2rem;
   height: 2rem;
   border-radius: 8px;
-  background: rgba(61, 240, 138, 0.15);
-  color: var(--green);
+  background: color-mix(in srgb, var(--mood-primary) 18%, transparent);
+  color: var(--mood-primary);
   font-family: var(--mono);
   font-weight: 700;
   display: grid;
   place-items: center;
+  transition: color 0.5s ease, background 0.5s ease;
 }
 .steps h3 {
   margin: 0 0 0.25rem;
@@ -456,6 +534,7 @@ h2 {
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 0.5rem;
+  transition: border-color 0.5s ease;
 }
 .term-chrome {
   font-family: var(--mono);
@@ -473,8 +552,9 @@ h2 {
 .terminal-block code {
   background: none;
   padding: 0;
-  color: var(--green);
+  color: var(--mood-primary);
   font-size: 0.9rem;
+  transition: color 0.5s ease;
 }
 
 .faq details {
@@ -483,6 +563,7 @@ h2 {
   padding: 0.85rem 1rem;
   margin-bottom: 0.65rem;
   background: var(--panel);
+  transition: border-color 0.5s ease;
 }
 .faq summary {
   cursor: pointer;
@@ -492,8 +573,9 @@ h2 {
 .faq summary::-webkit-details-marker { display: none; }
 .faq summary::before {
   content: "▸ ";
-  color: var(--amber);
+  color: var(--mood-accent);
   font-family: var(--mono);
+  transition: color 0.5s ease;
 }
 .faq details[open] summary::before { content: "▾ "; }
 .faq p {
@@ -506,10 +588,8 @@ h2 {
   text-align: center;
   padding-bottom: 4rem;
 }
-.cta-final img {
-  border-radius: 18px;
+.cta-final .pet-canvas-wrap {
   margin-bottom: 0.75rem;
-  box-shadow: 0 0 40px rgba(61, 240, 138, 0.25);
 }
 .cta-final p {
   color: var(--muted);
@@ -526,9 +606,10 @@ h2 {
   text-align: center;
   color: var(--muted);
   font-size: 0.88rem;
+  transition: border-color 0.5s ease;
 }
 .footer p { margin: 0.35rem 0; }
-.footer a { color: var(--green); }
+.footer a { color: var(--mood-primary); }
 
 @media (max-width: 860px) {
   .hero {
@@ -541,6 +622,11 @@ h2 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pet-card { animation: none; }
+  .pet-card,
+  .bg-glow,
+  .grad,
+  .bar i {
+    animation: none !important;
+  }
   .btn { transition: none; }
 }

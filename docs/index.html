@@ -17,7 +17,7 @@
 
   <header class="nav">
     <a class="brand" href="#">
-      <img src="assets/icon-256.png" alt="" width="36" height="36" />
+      <canvas class="pet-live" width="72" height="72" style="width:36px;height:36px" aria-hidden="true"></canvas>
       <span>Grok Buddy</span>
     </a>
     <nav>
@@ -40,13 +40,13 @@
         <div class="cta-row">
           <a class="btn btn-primary" href="https://github.com/zihangzeng666/grok-buddy-download/releases/download/v0.2.1/GrokBuddy-0.2.1.dmg">
             Download for Mac
-            <span class="btn-sub">DMG · ~1.8&nbsp;MB</span>
+            <span class="btn-sub">DMG · notarized</span>
           </a>
           <a class="btn btn-ghost" href="https://github.com/zihangzeng666/grok-buddy-download/releases/download/v0.2.1/GrokBuddy-0.2.1.zip">
             Get ZIP
           </a>
           <a class="btn btn-ghost" href="https://github.com/zihangzeng666/grok-buddy-download">
-            GitHub
+            Releases
           </a>
         </div>
         <p class="fine">Requires macOS&nbsp;14+ · First launch can install Grok CLI for you</p>
@@ -57,21 +57,24 @@
           <div class="pet-chrome">
             <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
             <span class="chrome-title">grok-buddy · live</span>
+            <span class="chrome-mood" id="buddy-mood">Idle</span>
           </div>
           <div class="speech">
             <span class="speech-label">Buddy says</span>
-            Thinking hard about the next step…
+            <span id="buddy-speech">Stand by — nothing run yet…</span>
           </div>
-          <img class="pet-icon" src="assets/icon-256.png" alt="" />
+          <div class="pet-canvas-wrap">
+            <canvas id="pet-canvas" class="pet-live" width="288" height="288"></canvas>
+          </div>
           <div class="status-mock">
             <div class="status-top">
-              <span class="status-name">Thinking</span>
-              <span class="status-pct">~42%</span>
+              <span class="status-name" id="status-name">Stand by</span>
+              <span class="status-pct" id="status-pct">0%</span>
             </div>
-            <div class="bar"><i style="width:42%"></i></div>
+            <div class="bar"><i id="status-bar-fill" style="width:6%"></i></div>
             <div class="status-meta">
-              <span>Stage: Reasoning</span>
-              <span>1:20 ETA ~2m</span>
+              <span id="status-stage">Stage: Stand by</span>
+              <span>live preview</span>
             </div>
             <div class="status-actions">
               <span>reply</span><span>menu</span><span>hide</span>
@@ -83,7 +86,7 @@
 
     <section id="features" class="section">
       <h2>Built for flow, not another window to babysit</h2>
-      <p class="section-lede">A tiny always-on companion that stays out of the way until Grok needs you.</p>
+      <p class="section-lede">A tiny always-on companion that stays out of the way until Grok needs you. The preview on the right cycles the same moods as the real pet.</p>
       <div class="grid features">
         <article class="card">
           <div class="card-icon">◉</div>
@@ -179,7 +182,9 @@
     </section>
 
     <section class="section cta-final">
-      <img src="assets/icon-256.png" alt="" width="72" height="72" />
+      <div class="pet-canvas-wrap">
+        <canvas class="pet-live" width="144" height="144" style="width:72px;height:72px" aria-hidden="true"></canvas>
+      </div>
       <h2>Ship with a pet on your desktop</h2>
       <p>Signed. Notarized. Ready for other Macs.</p>
       <a class="btn btn-primary" href="https://github.com/zihangzeng666/grok-buddy-download/releases/tag/v0.2.1">
@@ -196,5 +201,7 @@
     </p>
     <p class="fine">Not affiliated with xAI. “Grok” is a trademark of its respective owner.</p>
   </footer>
+
+  <script src="buddy-pet.js"></script>
 </body>
 </html>
