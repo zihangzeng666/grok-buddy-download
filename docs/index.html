@@ -2,13 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Grok Buddy — Floating companion for Grok CLI</title>
-  <meta name="description" content="Grok Buddy is a floating macOS pet that watches Grok CLI: live status, ETA, finish alerts, side chat, and smooth first-run setup." />
-  <meta property="og:title" content="Grok Buddy" />
-  <meta property="og:description" content="Floating macOS companion for Grok CLI — status, ETA, side chat." />
-  <meta property="og:image" content="assets/icon-256.png" />
+  <meta name="description" content="Grok Buddy is a floating macOS pet that watches Grok CLI: live status, ETA, finish alerts, side chat, and smooth first-run setup. Signed & notarized." />
+  <meta name="theme-color" content="#73d9f2" />
+  <meta name="color-scheme" content="dark" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Grok Buddy — desktop pet for Grok CLI" />
+  <meta property="og:description" content="Floating macOS companion for Grok CLI — status, ETA, side chat. Signed & notarized." />
+  <meta property="og:image" content="https://zihangzeng666.github.io/grok-buddy-download/assets/icon-256.png" />
+  <meta property="og:url" content="https://zihangzeng666.github.io/grok-buddy-download/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Grok Buddy" />
+  <meta name="twitter:description" content="Floating macOS companion for Grok CLI — status, ETA, side chat." />
+  <meta name="twitter:image" content="https://zihangzeng666.github.io/grok-buddy-download/assets/icon-256.png" />
   <link rel="icon" href="assets/icon-256.png" type="image/png" />
+  <link rel="apple-touch-icon" href="assets/icon-256.png" />
+  <link rel="preload" href="buddy-pet.js" as="script" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -21,7 +31,7 @@
         <canvas class="pet-live" width="72" height="72" style="width:40px;height:40px" aria-hidden="true"></canvas>
         <span>Grok Buddy</span>
       </a>
-      <nav>
+      <nav aria-label="Primary">
         <a href="#features">Play</a>
         <a href="#install">Install</a>
         <a href="#faq">FAQ</a>
@@ -51,8 +61,8 @@
               ZIP instead
             </a>
           </div>
-          <div class="mood-ticker">
-            <span class="mood-dot"></span>
+          <div class="mood-ticker" aria-live="polite">
+            <span class="mood-dot" aria-hidden="true"></span>
             mood right now: <b id="buddy-mood">Idle</b>
           </div>
         </div>
@@ -100,40 +110,40 @@
         </div>
         <div class="bento">
           <article class="card span3">
-            <div class="card-icon">🎮</div>
+            <div class="card-icon" aria-hidden="true">🎮</div>
             <h3>Live status theater</h3>
             <p>Thinking, tools, writing, “needs you”, done — Buddy mirrors Grok’s real session phases so you can alt-tab guilt-free.</p>
             <span class="tag">session stream</span>
           </article>
           <article class="card span3">
-            <div class="card-icon">⚡</div>
+            <div class="card-icon" aria-hidden="true">⚡</div>
             <h3>Progress that isn’t fake</h3>
             <p>Percentage + ETA when it can. When the last job ends, it stays <strong>Done</strong> — not a lying “Ready”.</p>
             <span class="tag">eta · 100%</span>
           </article>
           <article class="card span2">
-            <div class="card-icon">🔔</div>
+            <div class="card-icon" aria-hidden="true">🔔</div>
             <h3>Finish vibes</h3>
             <p>Celebration mode + optional macOS notifications when a turn wraps.</p>
           </article>
           <article class="card span2">
-            <div class="card-icon">💬</div>
+            <div class="card-icon" aria-hidden="true">💬</div>
             <h3>Side chat</h3>
             <p>Double-click pet → quick Q&amp;A Grok. Not your whole project agent.</p>
           </article>
           <article class="card span2">
-            <div class="card-icon">⌨️</div>
+            <div class="card-icon" aria-hidden="true">⌨️</div>
             <h3>Reply from the sky</h3>
             <p>Type a message into the live Grok terminal without digging for that window.</p>
           </article>
           <article class="card span4">
-            <div class="card-icon">🪄</div>
+            <div class="card-icon" aria-hidden="true">🪄</div>
             <h3>First-run that doesn’t suck</h3>
             <p>Missing Grok CLI? Buddy can run the official installer, or hand you the one-liner. Setup, hooks, side-chat folder — then the pet shows up.</p>
             <span class="tag">install for me</span>
           </article>
           <article class="card span2">
-            <div class="card-icon">🌈</div>
+            <div class="card-icon" aria-hidden="true">🌈</div>
             <h3>Mood palette</h3>
             <p>Idle cyan → think purple → work green → speak pink → alert amber → done mint. You’re watching it live above.</p>
           </article>
@@ -147,40 +157,40 @@
             <p class="section-lede">Four easy stages. No boss fight (unless Gatekeeper — but we’re notarized).</p>
           </div>
         </div>
-        <div class="install-strip">
-          <div class="step">
+        <ol class="install-strip">
+          <li class="step">
             <span class="step-n">1</span>
             <div>
               <h3>Grab the loot</h3>
               <p><a href="https://github.com/zihangzeng666/grok-buddy-download/releases/download/v0.2.1/GrokBuddy-0.2.1.dmg">DMG</a> or <a href="https://github.com/zihangzeng666/grok-buddy-download/releases/download/v0.2.1/GrokBuddy-0.2.1.zip">ZIP</a> from the release.</p>
             </div>
-            <span class="step-emoji">📦</span>
-          </div>
-          <div class="step">
+            <span class="step-emoji" aria-hidden="true">📦</span>
+          </li>
+          <li class="step">
             <span class="step-n">2</span>
             <div>
               <h3>Drag to Applications</h3>
               <p>Classic Mac ritual. Drop <strong>Grok Buddy</strong> next to your other apps.</p>
             </div>
-            <span class="step-emoji">📁</span>
-          </div>
-          <div class="step">
+            <span class="step-emoji" aria-hidden="true">📁</span>
+          </li>
+          <li class="step">
             <span class="step-n">3</span>
             <div>
               <h3>Open · maybe install CLI</h3>
               <p>If Grok isn’t there, hit <strong>Install for me</strong> — official xAI script with a live log.</p>
             </div>
-            <span class="step-emoji">🛠️</span>
-          </div>
-          <div class="step">
+            <span class="step-emoji" aria-hidden="true">🛠️</span>
+          </li>
+          <li class="step">
             <span class="step-n">4</span>
             <div>
               <h3>Summon Grok</h3>
               <p>In a project: <code>grok</code>. Buddy floats. Double-click pet for side chat chaos.</p>
             </div>
-            <span class="step-emoji">🚀</span>
-          </div>
-        </div>
+            <span class="step-emoji" aria-hidden="true">🚀</span>
+          </li>
+        </ol>
         <div class="terminal-block">
           <div class="term-chrome">// optional: install CLI yourself</div>
           <pre><code>curl -fsSL https://x.ai/cli/install.sh | bash</code></pre>
@@ -230,28 +240,12 @@
       <p>
         <strong>Grok Buddy</strong> · downloads on
         <a href="https://github.com/zihangzeng666/grok-buddy-download">GitHub</a>
-        · Grok CLI by <a href="https://x.ai">xAI</a>
+        · Grok CLI by <a href="https://x.ai" rel="noopener noreferrer">xAI</a>
       </p>
       <p class="fine">Not affiliated with xAI. “Grok” is a trademark of its respective owner.</p>
     </footer>
   </div>
 
-  <script src="buddy-pet.js"></script>
-  <script>
-    // playful floating bits
-    (function () {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      const host = document.getElementById("fun-bits");
-      if (!host) return;
-      for (let i = 0; i < 18; i++) {
-        const s = document.createElement("span");
-        s.style.left = Math.random() * 100 + "%";
-        s.style.animationDuration = 8 + Math.random() * 14 + "s";
-        s.style.animationDelay = -Math.random() * 12 + "s";
-        s.style.opacity = String(0.15 + Math.random() * 0.35);
-        host.appendChild(s);
-      }
-    })();
-  </script>
+  <script src="buddy-pet.js" defer></script>
 </body>
 </html>
