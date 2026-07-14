@@ -32,6 +32,7 @@
         <span>Grok Buddy</span>
       </a>
       <nav aria-label="Primary">
+        <a href="#demo">Demo</a>
         <a href="#features">Play</a>
         <a href="#install">Install</a>
         <a href="#faq">FAQ</a>
@@ -57,6 +58,7 @@
               Download for Mac
               <span class="btn-sub">DMG · drag to Applications</span>
             </a>
+            <a class="btn btn-ghost" href="#demo">Watch demo · 37s</a>
           </div>
           <div class="mood-ticker" aria-live="polite">
             <span class="mood-dot" aria-hidden="true"></span>
@@ -96,6 +98,39 @@
             </div>
           </div>
         </div>
+      </section>
+
+      <section id="demo" class="section demo-section">
+        <div class="section-head demo-head">
+          <div>
+            <p class="section-kicker">// demo.mp4</p>
+            <h2>See it run</h2>
+            <p class="section-lede">37 seconds — live status, finish alerts, side chat, first-run setup.</p>
+          </div>
+        </div>
+        <div class="demo-player">
+          <div class="video-chrome">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="chrome-title">buddy://promo</span>
+            <span class="chrome-mood">37s</span>
+          </div>
+          <video
+            class="promo-video"
+            controls
+            playsinline
+            preload="metadata"
+            poster="assets/video/promo-poster.jpg"
+          >
+            <source src="assets/video/promo.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <ul class="demo-chips" aria-label="In this demo">
+          <li>live status + ETA</li>
+          <li>finish alerts</li>
+          <li>side chat + reply</li>
+          <li>first-run setup</li>
+        </ul>
       </section>
 
       <section id="features" class="section">
