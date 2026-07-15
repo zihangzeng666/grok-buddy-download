@@ -1234,6 +1234,50 @@ h2 {
 }
 .footer p { margin: 0.35rem 0; line-height: 1.55; }
 .footer a { color: var(--mood-primary); font-weight: 700; }
+
+/* Indie “made by” mark — handwriting, not HUD mono */
+.dev-sig {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.45rem 0.55rem;
+  margin: 0.85rem 0 0.45rem !important;
+  padding: 0.55rem 0.75rem;
+  border-top: 1px dashed color-mix(in srgb, var(--mood-primary) 28%, transparent);
+  border-bottom: 1px dashed color-mix(in srgb, var(--mood-primary) 28%, transparent);
+}
+.dev-sig-prefix {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: #7a9588;
+}
+.dev-sig-name {
+  font-family: "Caveat", "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
+  font-size: 1.85rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--mood-glow);
+  text-decoration: none;
+  text-shadow: 2px 2px 0 #000;
+  transform: rotate(-2deg);
+  display: inline-block;
+}
+.dev-sig-name:hover {
+  color: var(--mood-primary);
+  text-decoration: none;
+  transform: rotate(-1deg) translateY(-1px);
+}
+.dev-sig-wave {
+  font-family: "Caveat", cursive;
+  font-size: 1.4rem;
+  color: var(--mood-accent);
+  transform: rotate(6deg);
+  display: inline-block;
+}
+
 .fine {
   opacity: 0.9;
   font-size: 0.72rem;
