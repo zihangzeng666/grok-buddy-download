@@ -48,6 +48,20 @@
 
     .demo-root { width: min(100%, 320px); }
 
+    /* Embedded in landing page iframe */
+    html.embed, html.embed body {
+      min-height: 0;
+      height: 100%;
+      background: transparent;
+      background-image: none;
+    }
+    html.embed body {
+      padding: 0.55rem 0.4rem 0.35rem;
+      place-items: start center;
+    }
+    html.embed .demo-root { width: min(100%, 300px); }
+    html.embed .caption { margin-top: 0.55rem; font-size: 0.62rem; }
+
     .frame { position: relative; }
     .frame::before, .frame::after, .frame-tr, .frame-bl {
       content: "";
@@ -853,6 +867,13 @@
 
       applyMood("idle");
       loop();
+    })();
+
+    // Landing embed: ?embed=1 or framed
+    (function () {
+      const framed = window.self !== window.top;
+      const q = /(?:^|[?&])embed=1(?:&|$)/.test(location.search);
+      if (framed || q) document.documentElement.classList.add("embed");
     })();
   </script>
 </body>
