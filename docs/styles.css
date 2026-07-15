@@ -43,8 +43,6 @@ body {
   margin: 0;
   min-height: 100vh;
   min-height: 100dvh;
-  padding-left: env(safe-area-inset-left, 0);
-  padding-right: env(safe-area-inset-right, 0);
   font-family: var(--font-body);
   color: var(--text);
   background-color: var(--bg0);
@@ -161,7 +159,6 @@ code {
   max-width: var(--max);
   margin: 0 auto;
   padding: 0.65rem var(--pad);
-  padding-top: max(0.65rem, env(safe-area-inset-top, 0px));
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -678,7 +675,6 @@ canvas.pet-live {
   max-width: var(--max);
   margin: 0 auto;
   padding: 2.25rem var(--pad) 2.75rem;
-  scroll-margin-top: 4.25rem;
   content-visibility: auto;
   contain-intrinsic-size: auto 480px;
 }
@@ -1575,286 +1571,43 @@ h2 {
   margin-inline: auto !important;
 }
 
-/* —— Tablet / phone landscape —— */
 @media (max-width: 900px) {
-  :root {
-    --pad: clamp(0.85rem, 3.5vw, 1.1rem);
-  }
-
-  .nav {
-    padding: 0.55rem var(--pad);
-    padding-top: max(0.55rem, env(safe-area-inset-top, 0px));
-    gap: 0.5rem;
-  }
-  .brand { font-size: 0.92rem; gap: 0.45rem; }
-  .brand canvas { width: 32px !important; height: 32px !important; }
-  /* Keep Download; drop mid-nav on tablet+phone to free space */
-  .nav nav a:not(.btn) { display: none; }
-  .nav nav .btn-sm {
-    padding: 0.45rem 0.7rem;
-    min-height: 2.5rem;
-    align-items: center;
-  }
-
   .hero {
     grid-template-columns: 1fr;
-    padding: 1rem var(--pad) 1.1rem;
-    gap: 1rem;
-  }
-  .stage {
-    min-height: 0;
-    order: -1;
-    padding-bottom: 0.25rem;
-  }
-  .stage .orbit,
-  .stage .orbit-2 {
-    width: min(280px, 86vw);
-    height: min(340px, 92vw);
-    max-height: 360px;
-  }
-  .pet-card {
-    width: min(100%, 280px);
-    padding: 0.7rem 0.7rem 0.8rem;
-  }
-  #pet-canvas {
-    width: 132px;
-    height: 132px;
-  }
-
-  .cta-row {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.55rem;
-  }
-  .cta-row .btn {
-    width: 100%;
-    align-items: center;
-    text-align: center;
-    min-height: 3rem;
-  }
-  .cta-row .btn-ghost {
-    align-items: center;
-  }
-
-  .section {
-    padding: 1.65rem var(--pad) 1.9rem;
-    scroll-margin-top: 3.75rem;
-    contain-intrinsic-size: auto 320px;
-  }
-  .section-head { margin-bottom: 0.95rem; }
-  .demo-section {
-    scroll-margin-top: 3.75rem;
     padding-top: 1rem;
-    padding-bottom: 1.4rem;
   }
+  .stage { min-height: 360px; order: -1; }
   .demo-player { max-width: 100%; }
-  .demo-chips {
-    justify-content: flex-start;
-    gap: 0.35rem;
-  }
-
   .bento { grid-template-columns: 1fr 1fr; }
   .card.span2, .card.span3, .card.span4, .card.span6 {
     grid-column: span 2;
   }
-
-  /* Highlights: stack — live HUD first, then copy */
   .hl-split {
     grid-template-columns: 1fr;
-    gap: 1.1rem;
+    gap: 1.25rem;
   }
   .hl-split-live {
     position: static;
-    width: 100%;
   }
-  .hl-stage {
-    padding: 0.35rem 0 0.15rem;
-  }
-  .hl-stage .orbit,
-  .hl-stage .orbit-2 {
-    display: none; /* corners eat vertical space on phone */
-  }
-  .hl-split-live .pet-card {
-    width: min(100%, 300px);
-  }
-  .hl-card #hl-canvas {
-    width: 120px;
-    height: 120px;
-  }
-  .highlight-intro {
-    font-size: 0.98rem;
-    margin-bottom: 0.85rem;
-  }
-  .hl-demos { gap: 0.45rem; margin-bottom: 0.85rem; }
-  .hl-demo-item { padding: 0.6rem 0.7rem; }
-  .hl-demo-item p { font-size: 0.88rem; }
-  .hl-phase {
-    margin-top: 0.5rem;
-    font-size: 0.65rem;
-  }
-
   .step:nth-child(even), .step:nth-child(odd) {
     margin-left: 0;
     margin-right: 0;
   }
-
-  .footer {
-    padding: 1.5rem var(--pad) calc(1.75rem + env(safe-area-inset-bottom, 0px));
-  }
+  .nav nav a:not(.btn) { display: none; }
 }
 
-/* —— Phone portrait —— */
 @media (max-width: 560px) {
   .bento { grid-template-columns: 1fr; }
   .card.span2, .card.span3, .card.span4, .card.span6 {
     grid-column: span 1;
   }
-  .card {
-    padding: 0.85rem 0.9rem;
-  }
-
-  .step {
-    grid-template-columns: auto 1fr;
-    padding: 0.75rem 0.8rem;
-  }
+  .step { grid-template-columns: auto 1fr; }
   .step-emoji { display: none; }
-
-  .cta-final {
-    margin-inline: var(--pad);
-    padding: 1.5rem 1rem;
-  }
-  .cta-final .btn {
-    width: 100%;
-    max-width: 20rem;
-    align-items: center;
-  }
-
+  .cta-final { margin-inline: var(--pad); }
   .scanlines { opacity: 0.08; }
   .fun-bits { display: none; }
-
-  h1 {
-    font-size: clamp(1.75rem, 8.2vw, 2.15rem);
-    margin-bottom: 0.7rem;
-  }
-  .lede {
-    font-size: 1rem;
-    margin-bottom: 1rem;
-    line-height: 1.6;
-  }
-  .pill-row { gap: 0.3rem; margin-bottom: 0.75rem; }
-  .pill {
-    font-size: 0.62rem;
-    padding: 0.22rem 0.42rem;
-  }
-  .mood-ticker {
-    font-size: 0.7rem;
-    max-width: 100%;
-  }
-
-  /* Hero pet: tighter */
-  .stage .orbit,
-  .stage .orbit-2 {
-    display: none;
-  }
-  .pet-card {
-    width: min(100%, 100%);
-    max-width: 300px;
-    box-shadow: 4px 4px 0 #000;
-  }
-  .speech {
-    font-size: 0.76rem;
-    min-height: 2.5rem;
-    padding: 0.45rem 0.55rem;
-  }
-  .status-mock {
-    font-size: 0.64rem;
-    padding: 0.5rem 0.55rem;
-  }
-  #pet-canvas {
-    width: 120px;
-    height: 120px;
-  }
-
-  /* Highlights live card fills width cleanly */
-  .hl-split-live .pet-card {
-    width: 100%;
-    max-width: 320px;
-  }
-  .hl-card .speech {
-    font-size: 0.74rem;
-    min-height: 2.4rem;
-  }
-  .hl-card #hl-canvas {
-    width: 112px;
-    height: 112px;
-  }
-  .hl-digest {
-    padding: 0.38rem 0.45rem;
-  }
-  .hl-bullets li,
-  .hl-digest-line {
-    font-size: 0.64rem;
-  }
-  .agent-row {
-    padding: 0.5rem 0.6rem;
-    gap: 0.5rem;
-  }
-  .agent-row .agent-tagline {
-    font-size: 0.68rem;
-    line-height: 1.4;
-  }
-
-  .changelog-release {
-    padding: 0.8rem 0.85rem;
-  }
-  .changelog-release ul {
-    font-size: 0.9rem;
-    padding-left: 1rem;
-  }
-
-  .faq details {
-    padding: 0.75rem 0.8rem;
-  }
-  .faq summary {
-    min-height: 2.5rem;
-    display: flex;
-    align-items: center;
-  }
-
-  .terminal-block {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .terminal-block pre {
-    font-size: 0.78rem;
-    white-space: pre-wrap;
-    word-break: break-all;
-  }
-
-  .install-strip { gap: 0.5rem; }
-
-  .dev-sig-name { font-size: 1.55rem; }
-  .fine { font-size: 0.68rem; }
-
-  /* Avoid double-tap zoom delay on primary taps */
-  .btn, .nav a, .faq summary {
-    touch-action: manipulation;
-  }
-}
-
-/* Very small phones */
-@media (max-width: 380px) {
-  .brand span { font-size: 0.85rem; }
-  .nav nav .btn-sm {
-    padding: 0.4rem 0.55rem;
-    font-size: 0.7rem;
-  }
-  h1 { font-size: 1.65rem; }
-  .hl-card #hl-canvas,
-  #pet-canvas {
-    width: 100px;
-    height: 100px;
-  }
+  #pet-canvas { width: 136px; height: 136px; }
+  h1 { font-size: clamp(1.85rem, 8vw, 2.3rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
