@@ -972,7 +972,7 @@ h2 {
   word-break: break-all;
 }
 
-/* What's new — three agent colors (match app TerminalTheme) */
+/* Highlights — three agent colors (match app TerminalTheme). Lives above What's new. */
 .agent-trio {
   --agent-grok: #59f28c;
   --agent-claude: #ffc740;
