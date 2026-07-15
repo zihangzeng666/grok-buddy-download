@@ -33,9 +33,9 @@
       </a>
       <nav aria-label="Primary">
         <a href="#demo">Demo</a>
+        <a href="#whats-new">What's new</a>
         <a href="#features">Play</a>
         <a href="#install">Install</a>
-        <a href="#whats-new">What's new</a>
         <a href="#faq">FAQ</a>
         <a class="btn btn-sm btn-primary" href="https://github.com/zihangzeng666/grok-buddy-download/releases/download/v0.2.9/GrokBuddy-0.2.9.dmg" download="GrokBuddy-0.2.9.dmg">Download</a>
       </nav>
@@ -133,6 +133,106 @@
           <li>multi-CLI sessions</li>
           <li>side chat + reply</li>
         </ul>
+      </section>
+
+      <section id="whats-new" class="section">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">// changelog</p>
+            <h2>What's new</h2>
+            <p class="section-lede">
+              One floating pet. <strong>Three agents.</strong> Status, ETA, reply, and multi-session focus —
+              now for Grok, Claude Code, and Codex.
+            </p>
+          </div>
+        </div>
+
+        <div class="agent-trio" aria-label="Supported coding agents">
+          <article class="agent-card agent-grok">
+            <header class="agent-card-head">
+              <span class="agent-swatch" aria-hidden="true"></span>
+              <span class="agent-chip">grok</span>
+            </header>
+            <h3>Grok</h3>
+            <p class="agent-tagline">xAI CLI · neon green</p>
+            <p>
+              Full Buddy stack: live turn status, honest ETA, finish alerts, side chat,
+              and reply paste into the terminal. The original companion path.
+            </p>
+            <ul class="agent-points">
+              <li>hooks + file bridge</li>
+              <li>double-click side chat</li>
+              <li>SessionStart auto-open</li>
+            </ul>
+          </article>
+
+          <article class="agent-card agent-claude">
+            <header class="agent-card-head">
+              <span class="agent-swatch" aria-hidden="true"></span>
+              <span class="agent-chip">claude</span>
+            </header>
+            <h3>Claude Code</h3>
+            <p class="agent-tagline">Anthropic · amber</p>
+            <p>
+              Now a first-class backend. Buddy watches Claude sessions with the same pet,
+              badge, permission prompts, and multi-session switching — not a Grok-only toy.
+            </p>
+            <ul class="agent-points">
+              <li>settings.json hooks</li>
+              <li>permission “needs you”</li>
+              <li>resume + project labels</li>
+            </ul>
+          </article>
+
+          <article class="agent-card agent-codex">
+            <header class="agent-card-head">
+              <span class="agent-swatch" aria-hidden="true"></span>
+              <span class="agent-chip">codex</span>
+            </header>
+            <h3>Codex</h3>
+            <p class="agent-tagline">OpenAI · cyan</p>
+            <p>
+              Codex is wired in too. Scroll the pet to flip sessions, follow background work,
+              and keep one HUD when you’re juggling agents across terminals.
+            </p>
+            <ul class="agent-points">
+              <li>hooks.json install</li>
+              <li>permission requests</li>
+              <li>session focus lock</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="changelog">
+          <article class="changelog-release is-latest">
+            <header class="changelog-head">
+              <span class="changelog-tag">latest</span>
+              <h3>v0.2.9</h3>
+              <time datetime="2026-07-15">2026-07-15</time>
+            </header>
+            <ul>
+              <li><strong>Three agents live</strong> — Grok (green), Claude Code (amber), and Codex (cyan) on one pet</li>
+              <li><strong>Menu open life</strong> — pet hop + status bar shapes into the sharp HUD rect</li>
+              <li><strong>Pinned over apps</strong> — always-on-top across Spaces and over fullscreen sessions</li>
+              <li><strong>Window sizing fixed</strong> — pet, speech, status, and menus no longer clip into a tiny panel</li>
+              <li><strong>One canonical app</strong> — Grok prefers the home install so duplicate copies cannot swap builds</li>
+            </ul>
+          </article>
+          <article class="changelog-release">
+            <header class="changelog-head">
+              <h3>v0.2.4 – v0.2.5</h3>
+              <time datetime="2026-07-14">2026-07-14</time>
+            </header>
+            <ul>
+              <li>Multi-CLI backends, hooks, reply inject, first-run setup</li>
+              <li>Honest ETA + finish alerts</li>
+            </ul>
+          </article>
+          <p class="changelog-more">
+            Full binaries &amp; notes on
+            <a href="https://github.com/zihangzeng666/grok-buddy-download/releases">GitHub Releases</a>.
+          </p>
+        </div>
       </section>
 
       <section id="features" class="section">
@@ -235,106 +335,6 @@
         <div class="terminal-block">
           <div class="term-chrome">// optional: install Grok CLI yourself</div>
           <pre><code>curl -fsSL https://x.ai/cli/install.sh | bash</code></pre>
-        </div>
-      </section>
-
-      <section id="whats-new" class="section">
-        <div class="section-head">
-          <div>
-            <p class="section-kicker">// changelog</p>
-            <h2>What's new</h2>
-            <p class="section-lede">
-              One floating pet. <strong>Three agents.</strong> Status, ETA, reply, and multi-session focus —
-              now for Grok, Claude Code, and Codex.
-            </p>
-          </div>
-        </div>
-
-        <div class="agent-trio" aria-label="Supported coding agents">
-          <article class="agent-card agent-grok">
-            <header class="agent-card-head">
-              <span class="agent-swatch" aria-hidden="true"></span>
-              <span class="agent-chip">grok</span>
-            </header>
-            <h3>Grok</h3>
-            <p class="agent-tagline">xAI CLI · neon green</p>
-            <p>
-              Full Buddy stack: live turn status, honest ETA, finish alerts, side chat,
-              and reply paste into the terminal. The original companion path.
-            </p>
-            <ul class="agent-points">
-              <li>hooks + file bridge</li>
-              <li>double-click side chat</li>
-              <li>SessionStart auto-open</li>
-            </ul>
-          </article>
-
-          <article class="agent-card agent-claude">
-            <header class="agent-card-head">
-              <span class="agent-swatch" aria-hidden="true"></span>
-              <span class="agent-chip">claude</span>
-            </header>
-            <h3>Claude Code</h3>
-            <p class="agent-tagline">Anthropic · amber</p>
-            <p>
-              Now a first-class backend. Buddy watches Claude sessions with the same pet,
-              badge, permission prompts, and multi-session switching — not a Grok-only toy.
-            </p>
-            <ul class="agent-points">
-              <li>settings.json hooks</li>
-              <li>permission “needs you”</li>
-              <li>resume + project labels</li>
-            </ul>
-          </article>
-
-          <article class="agent-card agent-codex">
-            <header class="agent-card-head">
-              <span class="agent-swatch" aria-hidden="true"></span>
-              <span class="agent-chip">codex</span>
-            </header>
-            <h3>Codex</h3>
-            <p class="agent-tagline">OpenAI · cyan</p>
-            <p>
-              Codex is wired in too. Scroll the pet to flip sessions, follow background work,
-              and keep one HUD when you’re juggling agents across terminals.
-            </p>
-            <ul class="agent-points">
-              <li>hooks.json install</li>
-              <li>permission requests</li>
-              <li>session focus lock</li>
-            </ul>
-          </article>
-        </div>
-
-        <div class="changelog">
-          <article class="changelog-release is-latest">
-            <header class="changelog-head">
-              <span class="changelog-tag">latest</span>
-              <h3>v0.2.9</h3>
-              <time datetime="2026-07-15">2026-07-15</time>
-            </header>
-            <ul>
-              <li><strong>Three agents live</strong> — Grok (green), Claude Code (amber), and Codex (cyan) on one pet</li>
-              <li><strong>Menu open life</strong> — pet hop + status bar shapes into the sharp HUD rect</li>
-              <li><strong>Pinned over apps</strong> — always-on-top across Spaces and over fullscreen sessions</li>
-              <li><strong>Window sizing fixed</strong> — pet, speech, status, and menus no longer clip into a tiny panel</li>
-              <li><strong>One canonical app</strong> — Grok prefers the home install so duplicate copies cannot swap builds</li>
-            </ul>
-          </article>
-          <article class="changelog-release">
-            <header class="changelog-head">
-              <h3>v0.2.4 – v0.2.5</h3>
-              <time datetime="2026-07-14">2026-07-14</time>
-            </header>
-            <ul>
-              <li>Multi-CLI backends, hooks, reply inject, first-run setup</li>
-              <li>Honest ETA + finish alerts</li>
-            </ul>
-          </article>
-          <p class="changelog-more">
-            Full binaries &amp; notes on
-            <a href="https://github.com/zihangzeng666/grok-buddy-download/releases">GitHub Releases</a>.
-          </p>
         </div>
       </section>
 
