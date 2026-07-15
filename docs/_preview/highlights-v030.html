@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Grok Buddy — Bell open demo (v0.3.0)</title>
+  <style>
+    /*
+      App stack (FloatingPetRootView.coreStack):
+        interactionChrome → FinishDigestPanel + SpeechBubble (chatbox)
+        petChrome         → pet | bell chip
+        statusChrome      → status bar
+      So open notification sits ABOVE the chatbox; chip is beside the pet.
+    */
+    :root {
+      --bg0: #0a0f0d;
+      --panel-deep: #0a100e;
+      --mood-primary: #73d9f2;
+      --mood-glow: #8cf2ff;
+      --mood-outline: #26598c;
+      --mood-accent: #ff8cc0;
+      --ink: #06100b;
+      --muted: #8ea89a;
+      --border: color-mix(in srgb, var(--mood-primary) 42%, #1a2e24);
+      --font-ui: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      --green: #59f28c;
+      --amber: #ffc740;
+      --cyan: #59e6f2;
+      --red: #ff6b6b;
+      --agent: var(--cyan);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 2rem 1rem 3rem;
+      background-color: var(--bg0);
+      background-image:
+        linear-gradient(color-mix(in srgb, var(--mood-primary) 5%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in srgb, var(--mood-primary) 5%, transparent) 1px, transparent 1px),
+        radial-gradient(700px 400px at 50% 20%, color-mix(in srgb, var(--mood-primary) 12%, transparent), transparent 60%);
+      background-size: 16px 16px, 16px 16px, auto;
+      font-family: var(--font-ui);
+      color: #eef8f1;
+    }
+
+    .demo-root { width: min(100%, 320px); }
+
+    .frame { position: relative; }
+    .frame::before, .frame::after, .frame-tr, .frame-bl {
+      content: "";
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--mood-primary);
+      pointer-events: none;
+      z-index: 5;
+    }
+    .frame::before { top: -6px; left: -6px; border-right: none; border-bottom: none; }
+    .frame::after { bottom: -6px; right: -6px; border-left: none; border-top: none; content: ""; }
+    .frame-tr { top: -6px; right: -6px; border-left: none; border-bottom: none; }
+    .frame-bl { bottom: -6px; left: -6px; border-right: none; border-top: none; }
+
+    .pet-card {
+      width: 100%;
+      background: var(--panel-deep);
+      border: 3px solid var(--border);
+      padding: 0.85rem 0.85rem 0.95rem;
+      box-shadow:
+        6px 6px 0 #000,
+        inset 0 0 0 1px color-mix(in srgb, var(--mood-primary) 18%, transparent);
+      transition: border-color 0.25s steps(4), box-shadow 0.25s steps(4);
+      position: relative;
+      overflow: hidden;
+    }
+    /* session-switch wash overlay on whole HUD */
+    .pet-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: color-mix(in srgb, var(--agent) 32%, transparent);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 4;
+      transition: opacity 0.05s linear;
+    }
+    .pet-card.wash-on::after { opacity: 1; }
+    .pet-card.wash-fade::after {
+      opacity: 0;
+      transition: opacity 1.7s ease-out;
+    }
+
+    .pet-chrome {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-bottom: 0.65rem;
+      font-size: 0.65rem;
+      color: var(--muted);
+      border-bottom: 1px solid color-mix(in srgb, var(--mood-primary) 20%, transparent);
+      padding-bottom: 0.45rem;
+      position: relative;
+      z-index: 2;
+    }
+    .dot { width: 8px; height: 8px; border: 1px solid #000; flex-shrink: 0; }
+    .dot.r { background: #ff5f57; }
+    .dot.y { background: #febc2e; }
+    .dot.g { background: #28c840; }
+    .chrome-title { margin-left: 0.3rem; color: var(--mood-glow); }
+    .chrome-mood {
+      margin-left: auto;
+      color: var(--mood-primary);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      transition: color 0.15s steps(3);
+    }
+
+    /* —— Stack matches app: digest ABOVE chatbox ABOVE pet —— */
+    .stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* FinishDigestPanelView — above speech */
+    .digest-panel {
+      width: 100%;
+      max-width: 220px;
+      padding: 0.45rem 0.55rem 0.5rem;
+      background:
+        linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--digest-accent, var(--green)) 10%, #0a100e) 0%,
+          #0a100e 55%
+        );
+      border: 2px solid color-mix(in srgb, var(--digest-accent, var(--green)) 55%, #000);
+      box-shadow:
+        3px 3px 0 #000,
+        inset 0 0 0 1px color-mix(in srgb, var(--digest-accent, var(--green)) 12%, transparent);
+      opacity: 0;
+      transform: translateY(6px);
+      max-height: 0;
+      overflow: hidden;
+      padding-top: 0;
+      padding-bottom: 0;
+      border-width: 0;
+      margin: 0;
+      pointer-events: none;
+      transition:
+        opacity 0.12s ease-out,
+        transform 0.12s ease-out,
+        max-height 0.18s steps(6),
+        padding 0.12s ease-out,
+        border-width 0.05s,
+        margin 0.12s;
+    }
+    .digest-panel.open {
+      opacity: 1;
+      transform: translateY(0);
+      max-height: 180px;
+      padding: 0.45rem 0.55rem 0.5rem;
+      border-width: 2px;
+      margin: 0 0 0.15rem;
+      pointer-events: auto;
+    }
+    .digest-panel.polishing { --digest-accent: var(--amber); }
+    .digest-panel.success { --digest-accent: var(--green); }
+    .digest-panel.fail { --digest-accent: var(--red); }
+
+    .digest-head {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-bottom: 0.35rem;
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: var(--digest-accent, var(--green));
+      text-transform: lowercase;
+    }
+    .digest-head .bell-icon { font-size: 0.7rem; line-height: 1; }
+    .digest-head .x {
+      margin-left: auto;
+      width: 16px;
+      height: 14px;
+      display: grid;
+      place-items: center;
+      font-size: 10px;
+      color: var(--muted);
+      border: 1px solid color-mix(in srgb, var(--muted) 40%, transparent);
+    }
+    .digest-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-bottom: 0.35rem;
+      font-size: 0.55rem;
+    }
+    .source-chip {
+      color: var(--digest-accent, var(--green));
+      border: 1px solid color-mix(in srgb, var(--digest-accent, var(--green)) 45%, transparent);
+      background: color-mix(in srgb, var(--digest-accent, var(--green)) 10%, transparent);
+      padding: 0.05rem 0.25rem;
+      font-weight: 800;
+    }
+    .digest-time { margin-left: auto; color: var(--muted); }
+    .digest-bullets {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 0.2rem;
+    }
+    .digest-bullets li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.3rem;
+      font-size: 0.68rem;
+      font-weight: 700;
+      line-height: 1.35;
+      color: var(--digest-accent, var(--green));
+    }
+    .digest-bullets li::before {
+      content: "▪";
+      color: var(--digest-accent, var(--green));
+    }
+    .digest-bullets.hidden,
+    .digest-sub.hidden { display: none; }
+    .digest-line {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--digest-accent, var(--green));
+      line-height: 1.35;
+    }
+    .digest-line.hidden { display: none; }
+    .digest-sub {
+      margin: 0.3rem 0 0.2rem;
+      font-size: 0.55rem;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .digest-session {
+      font-size: 0.55rem;
+      font-weight: 800;
+      color: var(--muted);
+    }
+
+    /* Speech / chatbox — BELOW notification, ABOVE pet */
+    .speech {
+      width: 100%;
+      background: #000;
+      border: 2px solid var(--mood-primary);
+      padding: 0.55rem 0.65rem;
+      font-size: 0.8rem;
+      color: var(--mood-primary);
+      min-height: 2.85rem;
+      line-height: 1.45;
+      box-shadow: 3px 3px 0 color-mix(in srgb, var(--mood-outline) 50%, #000);
+      position: relative;
+      transition: border-color 0.15s steps(3), color 0.15s steps(3), box-shadow 0.15s steps(3);
+    }
+    .speech::after {
+      content: "";
+      position: absolute;
+      left: 14px;
+      bottom: -8px;
+      width: 8px;
+      height: 8px;
+      background: #000;
+      border-right: 2px solid var(--mood-primary);
+      border-bottom: 2px solid var(--mood-primary);
+      transform: rotate(45deg);
+      transition: border-color 0.15s steps(3);
+    }
+    .speech-label {
+      display: block;
+      font-size: 0.58rem;
+      color: var(--mood-accent);
+      margin-bottom: 0.18rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    #buddy-speech { display: block; min-height: 1.2em; }
+
+    /* Pet + bell chip (HStack bottom-aligned, like app) */
+    .pet-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 0.28rem;
+      margin: 0.35rem 0 0.55rem;
+      min-height: 156px;
+    }
+    #pet-canvas {
+      width: 148px;
+      height: 148px;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      background:
+        linear-gradient(45deg, #0c1210 25%, transparent 25%),
+        linear-gradient(-45deg, #0c1210 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #0c1210 75%),
+        linear-gradient(-45deg, transparent 75%, #0c1210 75%);
+      background-size: 12px 12px;
+      background-position: 0 0, 0 6px, 6px -6px, -6px 0;
+      background-color: #080c0a;
+      border: 2px solid color-mix(in srgb, var(--mood-primary) 35%, #000);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--mood-glow) 12%, transparent);
+      display: block;
+      transition: border-color 0.15s steps(3), box-shadow 0.15s steps(3), transform 0.12s steps(3);
+    }
+    .pet-row.hop #pet-canvas {
+      transform: translateY(-10px);
+    }
+
+    .bell-chip {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 16px;
+      margin-bottom: 0.55rem;
+      font-size: 10px;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--chip-fill, var(--green));
+      background: color-mix(in srgb, var(--chip-fill, var(--green)) 12%, transparent);
+      border: 1px solid color-mix(in srgb, var(--chip-fill, var(--green)) 76%, transparent);
+      box-shadow: 1px 1px 0 #000;
+      flex-shrink: 0;
+    }
+    .bell-chip.show { display: inline-flex; }
+    .bell-chip.invert {
+      color: #0a100e;
+      background: var(--chip-fill, var(--green));
+      border-color: var(--chip-fill, var(--green));
+    }
+    .bell-chip.amber { --chip-fill: var(--amber); }
+    .bell-chip.green { --chip-fill: var(--green); }
+    .bell-chip.red { --chip-fill: var(--red); }
+
+    .status-mock {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.88);
+      border: 2px solid color-mix(in srgb, var(--mood-primary) 55%, #000);
+      padding: 0.6rem 0.65rem;
+      font-size: 0.68rem;
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--mood-primary) 15%, transparent);
+      position: relative;
+      z-index: 2;
+      transition: border-color 0.15s steps(3), background 0.2s linear;
+    }
+    .status-mock.wash-tint {
+      background: color-mix(in srgb, var(--agent) 22%, rgba(0, 0, 0, 0.88));
+      border-color: color-mix(in srgb, var(--agent) 70%, #000);
+    }
+    .status-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.35rem;
+    }
+    .status-name {
+      color: var(--mood-glow);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .status-pct {
+      color: #fff;
+      background: color-mix(in srgb, var(--mood-primary) 35%, transparent);
+      border: 1px solid var(--mood-primary);
+      padding: 0 0.35rem;
+      font-weight: 800;
+    }
+    .bar {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      overflow: hidden;
+      margin-bottom: 0.4rem;
+    }
+    .bar i {
+      display: block;
+      height: 100%;
+      width: 6%;
+      background: var(--mood-primary);
+      box-shadow: inset 0 -2px 0 color-mix(in srgb, #000 25%, transparent);
+      transition: width 0.35s steps(8), background 0.15s steps(3);
+    }
+    .status-meta {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      margin-bottom: 0.45rem;
+      font-size: 0.62rem;
+      gap: 0.4rem;
+    }
+    .status-meta .stage { color: var(--mood-glow); }
+    .status-actions { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+    .status-actions span {
+      background: var(--mood-glow);
+      color: var(--ink);
+      padding: 0.18rem 0.4rem;
+      font-weight: 800;
+      font-size: 0.62rem;
+      border: 1px solid #000;
+      text-transform: lowercase;
+    }
+    .status-actions span:nth-child(2) { background: var(--mood-primary); color: var(--ink); }
+    .status-actions span:nth-child(3) {
+      background: transparent;
+      color: var(--muted);
+      border-color: color-mix(in srgb, var(--muted) 50%, #000);
+    }
+
+    .caption {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 0.68rem;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .caption b { color: var(--mood-glow); }
+    .caption .phase {
+      display: block;
+      margin-top: 0.25rem;
+      color: var(--amber);
+      font-weight: 800;
+      min-height: 1.2em;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .digest-panel, #pet-canvas, .bar i, .speech, .pet-card::after {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-root">
+    <div class="frame">
+      <span class="frame-tr" aria-hidden="true"></span>
+      <span class="frame-bl" aria-hidden="true"></span>
+      <div class="pet-card" id="card">
+        <div class="pet-chrome">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="chrome-title">buddy://live</span>
+          <span class="chrome-mood" id="chrome-mood">Idle</span>
+        </div>
+
+        <div class="stack">
+          <!-- 1) Open notification ABOVE chatbox (app interactionChrome order) -->
+          <div class="digest-panel" id="digest" aria-live="polite">
+            <div class="digest-head">
+              <span class="bell-icon" aria-hidden="true">🔔</span>
+              <span>notification</span>
+              <span class="x" aria-hidden="true">×</span>
+            </div>
+            <div class="digest-meta">
+              <span class="source-chip" id="source-chip">…</span>
+              <span class="digest-time">11:38 PM</span>
+            </div>
+            <p class="digest-line" id="digest-line">Summarizing turn…</p>
+            <ul class="digest-bullets hidden" id="digest-bullets">
+              <li>Fixed the plus-sign login 500</li>
+              <li>Added regression for encoded emails</li>
+              <li>Left VERSION at 0.3.0</li>
+            </ul>
+            <p class="digest-sub hidden" id="digest-sub">Claude · 2m 14s · success</p>
+            <div class="digest-session">→ session</div>
+          </div>
+
+          <!-- 2) Chatbox / speech -->
+          <div class="speech" id="speech">
+            <span class="speech-label">Buddy says</span>
+            <span id="buddy-speech">Stand by — nothing run yet…</span>
+          </div>
+
+          <!-- 3) Pet + bell chip -->
+          <div class="pet-row" id="pet-row">
+            <canvas id="pet-canvas" width="320" height="320" aria-hidden="true"></canvas>
+            <span class="bell-chip green" id="bell-chip" title="Finish notification">🔔</span>
+          </div>
+        </div>
+
+        <div class="status-mock" id="status">
+          <div class="status-top">
+            <span class="status-name" id="status-name">Stand by</span>
+            <span class="status-pct" id="status-pct">0%</span>
+          </div>
+          <div class="bar"><i id="status-bar" style="width:6%"></i></div>
+          <div class="status-meta">
+            <span class="stage" id="status-stage">Stage: Stand by</span>
+            <span id="status-side">live preview</span>
+          </div>
+          <div class="status-actions">
+            <span>reply</span><span>menu</span><span>hide</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">
+      <b>// demo</b> · layout = notification → chatbox → pet+bell · status
+      <span class="phase" id="phase-label">booting…</span>
+    </p>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const MOODS = {
+        idle: {
+          label: "Idle",
+          speech: "Stand by — nothing run yet…",
+          stage: "Stand by",
+          name: "Stand by",
+          pct: "0%",
+          progress: 0.06,
+          primary: "#73d9f2",
+          glow: "#8cf2ff",
+          outline: "#26598c",
+          shape: "idle",
+        },
+        working: {
+          label: "Working",
+          speech: "Busy with tools right now…",
+          stage: "Running tools",
+          name: "Working",
+          pct: "~62%",
+          progress: 0.62,
+          primary: "#40f28c",
+          glow: "#8cf2a8",
+          outline: "#1a5c38",
+          shape: "working",
+        },
+        done: {
+          label: "Done",
+          speech: "Done! Last task finished.",
+          stage: "Last task finished",
+          name: "Done",
+          pct: "100%",
+          progress: 1,
+          primary: "#59f28c",
+          glow: "#8cf2a8",
+          outline: "#1a5c38",
+          shape: "done",
+        },
+      };
+
+      const AGENTS = [
+        { id: "grok", color: "#59f28c", name: "grok · main" },
+        { id: "claude", color: "#ffc740", name: "claude · login" },
+        { id: "codex", color: "#59e6f2", name: "codex · ship" },
+      ];
+
+      const SHAPES = {
+        idle: [
+          [0,0,0,0,0,2,2,0,0,2,2,0,0,0,0,0],[0,0,0,0,2,1,1,2,2,1,1,2,0,0,0,0],
+          [0,0,0,2,1,1,1,1,1,1,1,1,2,0,0,0],[0,0,2,1,1,1,1,1,1,1,1,1,1,2,0,0],
+          [0,2,1,1,7,7,1,1,1,1,7,7,1,1,2,0],[0,2,1,7,7,7,1,1,1,1,7,7,7,1,2,0],
+          [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],[2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+          [2,1,1,1,1,1,7,7,7,7,1,1,1,1,1,2],[2,1,1,1,1,7,7,7,7,7,7,1,1,1,1,2],
+          [0,2,1,1,1,7,7,7,7,7,7,1,1,1,2,0],[0,2,1,1,1,1,7,7,7,7,1,1,1,1,2,0],
+          [0,0,2,1,1,1,1,1,1,1,1,1,1,2,0,0],[0,0,0,2,1,1,1,1,1,1,1,1,2,0,0,0],
+          [0,0,0,2,9,9,2,2,2,2,9,9,2,0,0,0],[0,0,0,0,2,2,0,0,0,0,2,2,0,0,0,0],
+        ],
+        working: [
+          [0,0,0,0,2,2,5,5,5,5,2,2,0,0,0,0],[0,0,0,2,9,9,9,9,9,9,9,9,2,0,0,0],
+          [0,0,2,9,1,1,1,1,1,1,1,1,9,2,0,0],[0,2,9,1,1,1,1,1,1,1,1,1,1,9,2,0],
+          [0,2,1,1,1,1,1,1,1,1,1,1,1,1,2,0],[2,1,1,1,7,7,1,1,1,1,7,7,1,1,1,2],
+          [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],[2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+          [2,1,1,1,1,1,5,5,5,5,1,1,1,1,1,2],[2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+          [0,2,1,1,7,7,7,7,7,7,7,7,1,1,2,0],[0,2,9,1,7,7,7,7,7,7,7,7,1,9,2,0],
+          [0,0,2,9,1,1,1,1,1,1,1,1,9,2,0,0],[0,0,2,2,9,9,2,2,2,2,9,9,2,2,0,0],
+          [0,0,2,5,2,0,0,0,0,0,0,2,5,2,0,0],[0,0,2,2,0,0,0,0,0,0,0,0,2,2,0,0],
+        ],
+        done: [
+          [0,0,0,0,0,0,5,5,5,5,0,0,0,0,0,0],[0,0,0,0,0,2,1,1,1,1,2,0,0,0,0,0],
+          [0,0,5,0,2,1,1,1,1,1,1,2,0,5,0,0],[0,0,0,2,1,1,1,1,1,1,1,1,2,0,0,0],
+          [0,0,2,1,1,7,7,1,1,7,7,1,1,2,0,0],[0,2,1,1,7,7,1,1,1,1,7,7,1,1,2,0],
+          [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],[2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+          [2,1,1,1,1,1,7,7,7,7,1,1,1,1,1,2],[0,2,1,1,1,7,7,7,7,7,7,1,1,1,2,0],
+          [0,2,1,1,1,7,7,7,7,7,7,1,1,1,2,0],[0,0,2,1,1,1,1,1,1,1,1,1,1,2,0,0],
+          [0,0,0,2,1,1,1,1,1,1,1,1,2,0,0,0],[0,0,0,2,9,1,2,2,2,2,1,9,2,0,0,0],
+          [0,0,5,0,2,2,0,0,0,0,2,2,0,5,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        ],
+      };
+
+      const el = {
+        card: document.getElementById("card"),
+        mood: document.getElementById("chrome-mood"),
+        speech: document.getElementById("buddy-speech"),
+        speechBox: document.getElementById("speech"),
+        name: document.getElementById("status-name"),
+        pct: document.getElementById("status-pct"),
+        bar: document.getElementById("status-bar"),
+        stage: document.getElementById("status-stage"),
+        side: document.getElementById("status-side"),
+        status: document.getElementById("status"),
+        digest: document.getElementById("digest"),
+        source: document.getElementById("source-chip"),
+        line: document.getElementById("digest-line"),
+        bullets: document.getElementById("digest-bullets"),
+        sub: document.getElementById("digest-sub"),
+        chip: document.getElementById("bell-chip"),
+        petRow: document.getElementById("pet-row"),
+        phase: document.getElementById("phase-label"),
+        canvas: document.getElementById("pet-canvas"),
+      };
+      const ctx = el.canvas.getContext("2d");
+      const S = 320 / 16;
+      let currentShape = "idle";
+      let frame = 0;
+
+      function setCSSMood(m) {
+        document.documentElement.style.setProperty("--mood-primary", m.primary);
+        document.documentElement.style.setProperty("--mood-glow", m.glow);
+        document.documentElement.style.setProperty("--mood-outline", m.outline);
+        el.speechBox.style.borderColor = m.primary;
+        el.speechBox.style.color = m.primary;
+      }
+
+      function applyMood(key) {
+        const m = MOODS[key];
+        currentShape = m.shape;
+        setCSSMood(m);
+        el.mood.textContent = m.label;
+        el.speech.textContent = m.speech;
+        el.name.textContent = m.name;
+        el.pct.textContent = m.pct;
+        el.bar.style.width = Math.round(m.progress * 100) + "%";
+        el.bar.style.background = m.primary;
+        el.stage.textContent = "Stage: " + m.stage;
+        drawPet();
+      }
+
+      function paletteFor() {
+        const p = getComputedStyle(document.documentElement).getPropertyValue("--mood-primary").trim() || "#73d9f2";
+        return {
+          0: null,
+          1: p,
+          2: "#0a1a14",
+          5: "#ffe066",
+          7: "#e8fff0",
+          9: shade(p, 0.45),
+        };
+      }
+
+      function shade(hex, f) {
+        const n = hex.replace("#", "");
+        const r = parseInt(n.slice(0, 2), 16);
+        const g = parseInt(n.slice(2, 4), 16);
+        const b = parseInt(n.slice(4, 6), 16);
+        const s = (v) => Math.max(0, Math.min(255, Math.round(v * f)));
+        return "#" + [s(r), s(g), s(b)].map((v) => v.toString(16).padStart(2, "0")).join("");
+      }
+
+      function drawPet() {
+        const grid = SHAPES[currentShape].map((r) => r.slice());
+        // eyes
+        if (currentShape === "idle" || currentShape === "done") {
+          grid[6][5] = 2; grid[6][6] = 2; grid[6][9] = 2; grid[6][10] = 2;
+        } else {
+          grid[6][5] = 2; grid[6][6] = 2; grid[6][9] = 2; grid[6][10] = 2;
+          if (frame % 2 === 0) { grid[5][4] = 5; grid[5][11] = 5; }
+        }
+        const pal = paletteFor();
+        ctx.imageSmoothingEnabled = false;
+        ctx.fillStyle = "#080c0a";
+        ctx.fillRect(0, 0, 320, 320);
+        for (let y = 0; y < 16; y++) {
+          for (let x = 0; x < 16; x++) {
+            const c = pal[grid[y][x]];
+            if (!c) continue;
+            ctx.fillStyle = c;
+            ctx.fillRect(x * S, y * S, S, S);
+          }
+        }
+      }
+
+      function hop() {
+        el.petRow.classList.add("hop");
+        setTimeout(() => el.petRow.classList.remove("hop"), 180);
+      }
+
+      function setPhase(t) { el.phase.textContent = t; }
+
+      function showChip(mode) {
+        // mode: hide | amber | green | open | invert
+        el.chip.classList.remove("show", "amber", "green", "red", "invert");
+        if (mode === "hide") {
+          el.chip.textContent = "🔔";
+          return;
+        }
+        el.chip.classList.add("show");
+        if (mode === "amber") {
+          el.chip.classList.add("amber");
+          el.chip.textContent = "🔔";
+        } else if (mode === "green") {
+          el.chip.classList.add("green");
+          el.chip.textContent = "🔔";
+        } else if (mode === "open") {
+          el.chip.classList.add("green");
+          el.chip.textContent = "×";
+        } else if (mode === "invert") {
+          el.chip.classList.add("green", "invert");
+          el.chip.textContent = "🔔";
+        }
+      }
+
+      function flashBell(times, onDone) {
+        let i = 0;
+        function tick() {
+          if (i >= times) {
+            showChip("green");
+            onDone && onDone();
+            return;
+          }
+          showChip("invert");
+          setTimeout(() => {
+            showChip("green");
+            setTimeout(() => {
+              i++;
+              tick();
+            }, 90);
+          }, 90);
+        }
+        tick();
+      }
+
+      function openDigest(state) {
+        el.digest.classList.remove("polishing", "success", "fail", "open");
+        el.digest.classList.add(state, "open");
+        if (state === "polishing") {
+          el.source.textContent = "…";
+          el.line.textContent = "Summarizing turn…";
+          el.line.classList.remove("hidden");
+          el.bullets.classList.add("hidden");
+          el.sub.classList.add("hidden");
+        } else {
+          el.source.textContent = "cli";
+          el.line.classList.add("hidden");
+          el.bullets.classList.remove("hidden");
+          el.sub.classList.remove("hidden");
+        }
+      }
+
+      function closeDigest() {
+        el.digest.classList.remove("open", "polishing", "success", "fail");
+      }
+
+      function washTo(agent, holdMs, fadeMs) {
+        document.documentElement.style.setProperty("--agent", agent.color);
+        el.side.textContent = agent.name;
+        el.name.textContent = agent.name.split("·")[0].trim();
+        el.card.classList.remove("wash-fade");
+        el.card.classList.add("wash-on");
+        el.status.classList.add("wash-tint");
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            el.card.classList.remove("wash-on");
+            el.card.classList.add("wash-fade");
+            el.status.classList.remove("wash-tint");
+            setTimeout(() => {
+              el.card.classList.remove("wash-fade");
+              resolve();
+            }, fadeMs);
+          }, holdMs);
+        });
+      }
+
+      function wait(ms) {
+        return new Promise((r) => setTimeout(r, ms));
+      }
+
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      async function loop() {
+        // 0 idle
+        setPhase("idle · stand by");
+        applyMood("idle");
+        showChip("hide");
+        closeDigest();
+        el.side.textContent = "live preview";
+        await wait(reduce ? 400 : 1600);
+
+        // 1 working
+        setPhase("working · tools running");
+        applyMood("working");
+        hop();
+        await wait(reduce ? 400 : 2200);
+
+        // 2 done + bell appears (amber summarizing)
+        setPhase("done · bell appears (summarizing)");
+        applyMood("done");
+        hop();
+        showChip("amber");
+        openDigest("polishing");
+        el.speech.textContent = "Done! Polishing a digest…";
+        await wait(reduce ? 500 : 1600);
+
+        // 3 reverse-video flash ×3
+        setPhase("bell flash · reverse-video ×3");
+        showChip("green");
+        await new Promise((r) => flashBell(3, r));
+        await wait(reduce ? 200 : 400);
+
+        // 4 open panel with outcomes (above chatbox)
+        setPhase("notification open · above chatbox");
+        showChip("open");
+        openDigest("success");
+        el.speech.textContent = "Done! Fixed the plus-sign login 500.";
+        await wait(reduce ? 800 : 3200);
+
+        // 5 close notification
+        setPhase("dismiss notification");
+        closeDigest();
+        showChip("hide");
+        await wait(reduce ? 300 : 900);
+
+        // 6 session-switch wash loop
+        setPhase("session-switch wash · agent palette");
+        applyMood("working");
+        el.speech.textContent = "Switching focus…";
+        for (const agent of AGENTS) {
+          setPhase("wash → " + agent.id);
+          await washTo(agent, reduce ? 200 : 700, reduce ? 200 : 1700);
+          await wait(reduce ? 100 : 350);
+        }
+
+        el.side.textContent = "live preview";
+        await wait(reduce ? 200 : 600);
+        loop();
+      }
+
+      // gentle idle blink
+      setInterval(() => {
+        frame++;
+        drawPet();
+      }, 280);
+
+      applyMood("idle");
+      loop();
+    })();
+  </script>
+</body>
+</html>

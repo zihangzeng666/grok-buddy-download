@@ -145,9 +145,12 @@
           <div>
             <p class="section-kicker">// highlight</p>
             <h2>Three agents live</h2>
-            <p class="section-lede">
-              One floating pet. <strong>Grok, Claude Code, and Codex</strong> —
-              status, ETA, reply, and multi-session focus on the same HUD.
+            <p class="section-lede highlight-intro">
+              You juggle <strong>Grok</strong>, <strong>Claude Code</strong>, and <strong>Codex</strong>
+              across terminals — Buddy is one floating pet that keeps all three honest.
+              Live status and ETA while they work; when a turn ends, a tiny bell lands
+              <em>what actually changed</em>, not a wall of tool counts. Scroll to switch
+              sessions and the HUD washes that agent’s color so focus is physical, not a list.
             </p>
           </div>
         </div>
@@ -161,7 +164,7 @@
             <h3>Grok</h3>
             <p class="agent-tagline">xAI CLI · neon green</p>
             <p>
-              Full Buddy stack: live turn status, honest ETA, finish alerts, side chat,
+              Full Buddy stack: live turn status, honest ETA, finish digests, side chat,
               and reply paste into the terminal. The original companion path.
             </p>
             <ul class="agent-points">
@@ -179,13 +182,13 @@
             <h3>Claude Code</h3>
             <p class="agent-tagline">Anthropic · amber</p>
             <p>
-              Now a first-class backend. Buddy watches Claude sessions with the same pet,
-              badge, permission prompts, and multi-session switching — not a Grok-only toy.
+              First-class backend. Same pet, badge, permission “needs you,” multi-session
+              switch — plus digests that read the real Claude transcript.
             </p>
             <ul class="agent-points">
               <li>settings.json hooks</li>
               <li>permission “needs you”</li>
-              <li>resume + project labels</li>
+              <li>transcript-aware digests</li>
             </ul>
           </article>
 
@@ -197,14 +200,50 @@
             <h3>Codex</h3>
             <p class="agent-tagline">OpenAI · cyan</p>
             <p>
-              Codex is wired in too. Scroll the pet to flip sessions, follow background work,
-              and keep one HUD when you’re juggling agents across terminals.
+              Wired for juggling. Scroll the pet to flip sessions; digests scan rollouts
+              <em>forward</em> so the user ask isn’t lost in megabyte tool dumps.
             </p>
             <ul class="agent-points">
               <li>hooks.json install</li>
-              <li>permission requests</li>
+              <li>forward rollout scan</li>
               <li>session focus lock</li>
             </ul>
+          </article>
+        </div>
+
+        <div class="feature-strip" aria-label="Standout capabilities">
+          <article class="feature-card feature-digest">
+            <header class="feature-card-head">
+              <span class="feature-glyph" aria-hidden="true">◈</span>
+              <span class="feature-chip">digest</span>
+            </header>
+            <h3>Finish digests</h3>
+            <p>
+              When a turn stops, Buddy hands you <strong>outcomes</strong> — optional
+              AI-polished bullets from the real session log. Not “ran 14 tools.”
+            </p>
+          </article>
+          <article class="feature-card feature-bell">
+            <header class="feature-card-head">
+              <span class="feature-glyph feature-glyph-bell" aria-hidden="true">🔔</span>
+              <span class="feature-chip">alert</span>
+            </header>
+            <h3>A bell that means it</h3>
+            <p>
+              Reverse-video flash, then done. Accent goes amber while summarizing,
+              green on success, red on fail — no stale chip sitting there on every launch.
+            </p>
+          </article>
+          <article class="feature-card feature-wash">
+            <header class="feature-card-head">
+              <span class="feature-glyph" aria-hidden="true">≋</span>
+              <span class="feature-chip">focus</span>
+            </header>
+            <h3>Session-switch wash</h3>
+            <p>
+              Flip agents and the pet <em>and</em> status bar wash that palette, then fade.
+              Your eye lands on the new session name — not a silent list row.
+            </p>
           </article>
         </div>
       </section>

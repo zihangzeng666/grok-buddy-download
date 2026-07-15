@@ -973,6 +973,13 @@ h2 {
 }
 
 /* Highlights — three agent colors (match app TerminalTheme). Lives above What's new. */
+.highlight-intro {
+  max-width: 42rem;
+}
+.highlight-intro em {
+  font-style: italic;
+  color: color-mix(in srgb, var(--mood-belly) 88%, #fff);
+}
 .agent-trio {
   --agent-grok: #59f28c;
   --agent-claude: #ffc740;
@@ -980,8 +987,94 @@ h2 {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.75rem;
-  margin: 0 0 1.15rem;
+  margin: 0 0 1rem;
   max-width: 100%;
+}
+/* Standout v0.3 features under the agent trio */
+.feature-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0 0 0.25rem;
+  max-width: 100%;
+}
+.feature-card {
+  border: 2px solid var(--border);
+  background: var(--panel);
+  padding: 0.85rem 0.95rem 0.95rem;
+  border-radius: 0;
+  box-shadow: 3px 3px 0 #000;
+  min-width: 0;
+  position: relative;
+  overflow: hidden;
+}
+.feature-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--feature-accent, var(--mood-primary));
+}
+.feature-card:hover {
+  background: color-mix(in srgb, var(--feature-accent, var(--mood-primary)) 8%, var(--panel));
+  box-shadow:
+    3px 3px 0 #000,
+    inset 0 0 0 1px color-mix(in srgb, var(--feature-accent, var(--mood-primary)) 35%, transparent);
+}
+.feature-digest { --feature-accent: #59f28c; }
+.feature-bell { --feature-accent: #ffc740; }
+.feature-wash { --feature-accent: #59e6f2; }
+.feature-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+}
+.feature-glyph {
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  line-height: 1;
+  color: var(--feature-accent, var(--mood-primary));
+  text-shadow: 1px 1px 0 #000;
+}
+.feature-glyph-bell {
+  font-size: 0.85rem;
+  filter: grayscale(0.2);
+}
+.feature-chip {
+  font-family: var(--font-ui);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+  color: var(--feature-accent, var(--mood-primary));
+  border: 1px solid color-mix(in srgb, var(--feature-accent, var(--mood-primary)) 55%, #000);
+  background: color-mix(in srgb, var(--feature-accent, var(--mood-primary)) 12%, #000);
+  padding: 0.1rem 0.38rem;
+  box-shadow: 1px 1px 0 #000;
+}
+.feature-card h3 {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  color: #f2faf5;
+}
+.feature-card p {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #c5d6cb;
+}
+.feature-card p strong {
+  color: color-mix(in srgb, var(--feature-accent, var(--mood-belly)) 70%, #fff);
+  font-weight: 700;
+}
+.feature-card p em {
+  font-style: italic;
+  color: color-mix(in srgb, var(--feature-accent, var(--mood-belly)) 75%, #fff);
 }
 .agent-card {
   border: 2px solid var(--agent-color, var(--border));
@@ -1298,7 +1391,8 @@ h2 {
   .card.span2, .card.span3, .card.span4, .card.span6 {
     grid-column: span 2;
   }
-  .agent-trio {
+  .agent-trio,
+  .feature-strip {
     grid-template-columns: 1fr;
   }
   .step:nth-child(even), .step:nth-child(odd) {
@@ -1326,7 +1420,7 @@ h2 {
   .pet-card, .mood-dot, .fun-bits span {
     animation: none !important;
   }
-  .card:hover, .btn:hover, .step:hover, .agent-card:hover {
+  .card:hover, .btn:hover, .step:hover, .agent-card:hover, .feature-card:hover {
     transform: none;
   }
 }
