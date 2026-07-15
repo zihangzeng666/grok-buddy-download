@@ -243,9 +243,69 @@
           <div>
             <p class="section-kicker">// changelog</p>
             <h2>What's new</h2>
-            <p class="section-lede">User-facing highlights only — not the engineering diary.</p>
+            <p class="section-lede">
+              One floating pet. <strong>Three agents.</strong> Status, ETA, reply, and multi-session focus —
+              now for Grok, Claude Code, and Codex.
+            </p>
           </div>
         </div>
+
+        <div class="agent-trio" aria-label="Supported coding agents">
+          <article class="agent-card agent-grok">
+            <header class="agent-card-head">
+              <span class="agent-swatch" aria-hidden="true"></span>
+              <span class="agent-chip">grok</span>
+            </header>
+            <h3>Grok</h3>
+            <p class="agent-tagline">xAI CLI · neon green</p>
+            <p>
+              Full Buddy stack: live turn status, honest ETA, finish alerts, side chat,
+              and reply paste into the terminal. The original companion path.
+            </p>
+            <ul class="agent-points">
+              <li>hooks + file bridge</li>
+              <li>double-click side chat</li>
+              <li>SessionStart auto-open</li>
+            </ul>
+          </article>
+
+          <article class="agent-card agent-claude">
+            <header class="agent-card-head">
+              <span class="agent-swatch" aria-hidden="true"></span>
+              <span class="agent-chip">claude</span>
+            </header>
+            <h3>Claude Code</h3>
+            <p class="agent-tagline">Anthropic · amber</p>
+            <p>
+              Now a first-class backend. Buddy watches Claude sessions with the same pet,
+              badge, permission prompts, and multi-session switching — not a Grok-only toy.
+            </p>
+            <ul class="agent-points">
+              <li>settings.json hooks</li>
+              <li>permission “needs you”</li>
+              <li>resume + project labels</li>
+            </ul>
+          </article>
+
+          <article class="agent-card agent-codex">
+            <header class="agent-card-head">
+              <span class="agent-swatch" aria-hidden="true"></span>
+              <span class="agent-chip">codex</span>
+            </header>
+            <h3>Codex</h3>
+            <p class="agent-tagline">OpenAI · cyan</p>
+            <p>
+              Codex is wired in too. Scroll the pet to flip sessions, follow background work,
+              and keep one HUD when you’re juggling agents across terminals.
+            </p>
+            <ul class="agent-points">
+              <li>hooks.json install</li>
+              <li>permission requests</li>
+              <li>session focus lock</li>
+            </ul>
+          </article>
+        </div>
+
         <div class="changelog">
           <article class="changelog-release is-latest">
             <header class="changelog-head">
@@ -254,12 +314,11 @@
               <time datetime="2026-07-15">2026-07-15</time>
             </header>
             <ul>
-              <li><strong>Window sizing fixed</strong> — pet, speech, status, and menus no longer collapse into a clipped 111px panel</li>
-              <li><strong>Stable expansion</strong> — menu and reply chrome keep intrinsic sizing without reviving the constraint-loop crash</li>
-              <li><strong>One canonical app</strong> — Grok prefers the explicit home install, so duplicate app copies cannot swap versions</li>
-              <li><strong>Multi-agent polish</strong> — session focus, working-only identity pulses, and loading presentation stay intact</li>
-              <li><strong>Menu open life</strong> — pet hop + status bar shapes into the sharp HUD rect when you open the menu</li>
-              <li><strong>Pinned over apps</strong> — Buddy stays always-on-top across Spaces and over other apps’ fullscreen</li>
+              <li><strong>Three agents live</strong> — Grok (green), Claude Code (amber), and Codex (cyan) on one pet</li>
+              <li><strong>Menu open life</strong> — pet hop + status bar shapes into the sharp HUD rect</li>
+              <li><strong>Pinned over apps</strong> — always-on-top across Spaces and over fullscreen sessions</li>
+              <li><strong>Window sizing fixed</strong> — pet, speech, status, and menus no longer clip into a tiny panel</li>
+              <li><strong>One canonical app</strong> — Grok prefers the home install so duplicate copies cannot swap builds</li>
             </ul>
           </article>
           <article class="changelog-release">
