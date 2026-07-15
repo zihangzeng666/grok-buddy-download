@@ -211,67 +211,72 @@
           </article>
         </div>
 
-        <div class="feature-strip" aria-label="Standout capabilities">
-          <article class="feature-card feature-digest">
-            <header class="feature-card-head">
-              <span class="feature-glyph" aria-hidden="true">◈</span>
-              <span class="feature-chip">digest</span>
-            </header>
-            <h3>Finish digests</h3>
-            <p>
-              When a turn stops, Buddy hands you <strong>outcomes</strong> — optional
-              AI-polished bullets from the real session log. Not “ran 14 tools.”
-            </p>
-          </article>
-          <article class="feature-card feature-bell">
-            <header class="feature-card-head">
-              <span class="feature-glyph feature-glyph-bell" aria-hidden="true">🔔</span>
-              <span class="feature-chip">alert</span>
-            </header>
-            <h3>A bell that means it</h3>
-            <p>
-              Reverse-video flash, then done. Accent goes amber while summarizing,
-              green on success, red on fail — no stale chip sitting there on every launch.
-            </p>
-          </article>
-          <article class="feature-card feature-wash">
-            <header class="feature-card-head">
-              <span class="feature-glyph" aria-hidden="true">≋</span>
-              <span class="feature-chip">focus</span>
-            </header>
-            <h3>Session-switch wash</h3>
-            <p>
-              Flip agents and the pet <em>and</em> status bar wash that palette, then fade.
-              Your eye lands on the new session name — not a silent list row.
-            </p>
-          </article>
-        </div>
+        <ul class="feature-pills" aria-label="Standout capabilities">
+          <li><b>finish digests</b> — outcomes, not tool counts</li>
+          <li><b>bell flash</b> — reverse-video, then open above chatbox</li>
+          <li><b>session wash</b> — pet + bar tint on switch</li>
+        </ul>
 
-        <!-- Animated product mock: notification above chatbox, bell flash, wash -->
-        <div class="highlight-demo" id="bell-demo">
-          <div class="highlight-demo-head">
-            <p class="section-kicker">// live mock</p>
-            <p class="highlight-demo-lede">
-              Same HUD chrome as the app — notification sits <strong>above</strong> the chatbox.
-              Watch the bell flash, open outcomes, then agent wash.
-            </p>
-          </div>
-          <div class="highlight-demo-frame">
-            <div class="video-chrome">
+        <!-- Same pet-card chrome as the hero — not an iframe in a box -->
+        <div class="hl-stage" id="bell-demo">
+          <div class="orbit" aria-hidden="true"></div>
+          <div class="orbit orbit-2" aria-hidden="true"></div>
+          <div class="pet-card hl-card" id="hl-card" role="img" aria-label="Animated Buddy HUD: finish digest above chatbox">
+            <div class="pet-chrome">
               <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-              <span class="chrome-title">buddy://demo · bell open</span>
-              <span class="chrome-mood">loop</span>
+              <span class="chrome-title">buddy://live</span>
+              <span class="chrome-mood" id="hl-mood">Idle</span>
             </div>
-            <iframe
-              class="highlight-demo-iframe"
-              src="demo/bell-open.html?embed=1"
-              title="Grok Buddy finish-digest bell demo — notification above chatbox"
-              loading="lazy"
-            ></iframe>
+
+            <!-- App order: notification ABOVE speech/chatbox -->
+            <div class="hl-digest" id="hl-digest" hidden>
+              <div class="hl-digest-head">
+                <span class="hl-digest-bell" aria-hidden="true">🔔</span>
+                <span>notification</span>
+                <span class="hl-digest-x" aria-hidden="true">×</span>
+              </div>
+              <div class="hl-digest-meta">
+                <span class="hl-source" id="hl-source">cli</span>
+                <span class="hl-time">11:38 PM</span>
+              </div>
+              <p class="hl-digest-line" id="hl-line">Summarizing turn…</p>
+              <ul class="hl-bullets" id="hl-bullets" hidden>
+                <li>Fixed the plus-sign login 500</li>
+                <li>Added regression for encoded emails</li>
+                <li>Left VERSION at 0.3.0</li>
+              </ul>
+              <p class="hl-digest-sub" id="hl-sub" hidden>Claude · 2m 14s · success</p>
+              <div class="hl-session">→ session</div>
+            </div>
+
+            <div class="speech">
+              <span class="speech-label">Buddy says</span>
+              <span id="hl-speech">Stand by — nothing run yet…</span>
+            </div>
+
+            <div class="hl-pet-row" id="hl-pet-row">
+              <div class="pet-canvas-wrap">
+                <canvas id="hl-canvas" width="320" height="320" aria-hidden="true"></canvas>
+              </div>
+              <span class="hl-bell" id="hl-bell" hidden title="Finish notification">🔔</span>
+            </div>
+
+            <div class="status-mock" id="hl-status">
+              <div class="status-top">
+                <span class="status-name" id="hl-name">Stand by</span>
+                <span class="status-pct" id="hl-pct">0%</span>
+              </div>
+              <div class="bar"><i id="hl-bar" style="width:6%"></i></div>
+              <div class="status-meta">
+                <span id="hl-stage-label">Stage: Stand by</span>
+                <span id="hl-side">live preview</span>
+              </div>
+              <div class="status-actions">
+                <span>reply</span><span>menu</span><span>hide</span>
+              </div>
+            </div>
           </div>
-          <p class="highlight-demo-more">
-            <a href="demo/bell-open.html">Open full-screen demo ↗</a>
-          </p>
+          <p class="hl-phase" id="hl-phase" aria-live="polite">// demo · stand by</p>
         </div>
       </section>
 
@@ -491,5 +496,6 @@
   </div>
 
   <script src="buddy-pet.js" defer></script>
+  <script src="bell-demo.js" defer></script>
 </body>
 </html>
