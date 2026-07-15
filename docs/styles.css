@@ -972,62 +972,167 @@ h2 {
   word-break: break-all;
 }
 
-/* Highlights — three agent colors (match app TerminalTheme). Lives above What's new. */
-.highlight-intro {
-  max-width: 42rem;
-}
-.highlight-intro em {
-  font-style: italic;
-  color: color-mix(in srgb, var(--mood-belly) 88%, #fff);
-}
-.agent-trio {
+/* Highlights — left buddy://live, right demo copy. Lives above What's new. */
+.hl-split {
   --agent-grok: #59f28c;
   --agent-claude: #ffc740;
   --agent-codex: #59e6f2;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.75rem;
-  margin: 0 0 1rem;
+  grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+  gap: 1.5rem 2rem;
+  align-items: start;
   max-width: 100%;
 }
-/* Dense one-liners — not a second card grid fighting the pet demo */
-.feature-pills {
-  list-style: none;
-  margin: 0 0 1.25rem;
-  padding: 0;
+.hl-split-live {
+  position: sticky;
+  top: 4.5rem;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem 0.55rem;
-  font-family: var(--font-ui);
-  font-size: 0.74rem;
-  letter-spacing: 0.02em;
-  color: #9bb5a8;
+  flex-direction: column;
+  align-items: center;
 }
-.feature-pills li {
-  border: 1px solid var(--border);
-  background: color-mix(in srgb, var(--panel) 92%, #000);
-  padding: 0.28rem 0.5rem;
-  box-shadow: 2px 2px 0 #000;
+.hl-split-copy {
+  min-width: 0;
+  padding-top: 0.15rem;
 }
-.feature-pills b {
-  color: var(--mood-glow);
-  font-weight: 800;
-  text-transform: lowercase;
+.highlight-intro {
+  margin: 0 0 1rem;
+  max-width: 36rem;
+  color: #b8cbbf;
+  font-size: 1.02rem;
+  line-height: 1.6;
+}
+.highlight-intro strong { color: #f2faf5; }
+.highlight-intro em {
+  font-style: italic;
+  color: color-mix(in srgb, var(--mood-belly) 88%, #fff);
 }
 
-/* Highlights HUD mock — twin of hero .stage / .pet-card, no iframe */
+/* Right column — dense demo blurbs */
+.hl-demos {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0 0 1rem;
+}
+.hl-demo-item {
+  border: 2px solid var(--border);
+  background: var(--panel);
+  padding: 0.7rem 0.8rem 0.75rem;
+  box-shadow: 2px 2px 0 #000;
+}
+.hl-demo-item header {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.35rem;
+}
+.hl-demo-item h3 {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.88rem;
+  letter-spacing: 0.03em;
+  color: #f2faf5;
+}
+.hl-demo-item p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #c5d6cb;
+}
+.hl-demo-item p strong {
+  color: #e8fff0;
+  font-weight: 700;
+}
+.hl-demo-item p em {
+  font-style: italic;
+  color: color-mix(in srgb, var(--mood-belly) 80%, #fff);
+}
+.hl-demo-chip {
+  font-family: var(--font-ui);
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+  padding: 0.1rem 0.35rem;
+  border: 1px solid color-mix(in srgb, var(--chip-c, var(--mood-primary)) 55%, #000);
+  color: var(--chip-c, var(--mood-primary));
+  background: color-mix(in srgb, var(--chip-c, var(--mood-primary)) 12%, #000);
+  box-shadow: 1px 1px 0 #000;
+  flex-shrink: 0;
+}
+.hl-demo-chip-digest { --chip-c: #59f28c; }
+.hl-demo-chip-bell { --chip-c: #ffc740; }
+.hl-demo-chip-wash { --chip-c: #59e6f2; }
+
+/* Compact agent rows under demos */
+.agent-stack {
+  display: grid;
+  gap: 0.45rem;
+}
+.agent-row {
+  --agent-color: var(--mood-primary);
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  gap: 0.65rem;
+  align-items: start;
+  border: 2px solid color-mix(in srgb, var(--agent-color) 55%, #000);
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--agent-color) 12%, var(--panel)) 0%,
+      var(--panel) 48%
+    );
+  padding: 0.55rem 0.7rem;
+  box-shadow: 2px 2px 0 #000;
+}
+.agent-row.agent-grok { --agent-color: #59f28c; }
+.agent-row.agent-claude { --agent-color: #ffc740; }
+.agent-row.agent-codex { --agent-color: #59e6f2; }
+.agent-row .agent-swatch {
+  margin-top: 0.2rem;
+}
+.agent-row-head {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.15rem;
+}
+.agent-row-head h3 {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  color: var(--agent-color);
+}
+.agent-row .agent-tagline {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  color: color-mix(in srgb, var(--agent-color) 65%, var(--muted));
+}
+
+/* Left column — twin of hero .stage / .pet-card */
 .hl-stage {
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 460px;
-  margin: 0.25rem 0 0.5rem;
-  padding: 0.5rem 0 1.25rem;
+  width: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 0.85rem 0.35rem 0.5rem;
 }
 .hl-stage .orbit,
 .hl-stage .orbit-2 {
-  max-height: 520px;
-  height: min(500px, 110vw);
+  width: min(300px, 92%);
+  height: min(440px, 92%);
+  max-height: none;
+}
+.hl-split-live .pet-card {
+  width: min(100%, 288px);
+}
+.hl-split-live .hl-phase {
+  margin-top: 0.65rem;
 }
 .hl-card {
   /* local accent for wash; defaults match page mood */
@@ -1239,49 +1344,6 @@ h2 {
   text-align: center;
 }
 
-@media (max-width: 560px) {
-  .hl-stage {
-    min-height: 420px;
-  }
-  .feature-pills {
-    flex-direction: column;
-  }
-}
-.agent-card {
-  border: 2px solid var(--agent-color, var(--border));
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--agent-color) 12%, var(--panel)) 0%,
-      var(--panel) 42%
-    );
-  padding: 0.9rem 0.95rem 1rem;
-  border-radius: 0;
-  box-shadow: 3px 3px 0 #000;
-  min-width: 0;
-}
-.agent-card:hover {
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--agent-color) 18%, var(--panel)) 0%,
-      color-mix(in srgb, var(--agent-color) 6%, var(--panel)) 100%
-    );
-  box-shadow:
-    3px 3px 0 #000,
-    inset 0 0 0 1px color-mix(in srgb, var(--agent-color) 45%, transparent);
-}
-/* Direct hex — avoid self-referential custom props on the same node */
-.agent-grok { --agent-color: #59f28c; }
-.agent-claude { --agent-color: #ffc740; }
-.agent-codex { --agent-color: #59e6f2; }
-.agent-card-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  margin-bottom: 0.55rem;
-}
 .agent-swatch {
   width: 14px;
   height: 14px;
@@ -1301,48 +1363,6 @@ h2 {
   background: color-mix(in srgb, var(--agent-color) 12%, #000);
   padding: 0.12rem 0.4rem;
   box-shadow: 1px 1px 0 #000;
-}
-.agent-card h3 {
-  margin: 0 0 0.2rem;
-  font-family: var(--font-ui);
-  font-size: 1.05rem;
-  letter-spacing: 0.04em;
-  color: var(--agent-color);
-}
-.agent-tagline {
-  margin: 0 0 0.55rem;
-  font-family: var(--font-ui);
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
-  color: color-mix(in srgb, var(--agent-color) 70%, var(--muted));
-}
-.agent-card > p:not(.agent-tagline) {
-  margin: 0 0 0.65rem;
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  line-height: 1.5;
-  color: #c5d6cb;
-}
-.agent-points {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 0.28rem;
-  font-family: var(--font-ui);
-  font-size: 0.74rem;
-  letter-spacing: 0.03em;
-  color: color-mix(in srgb, var(--agent-color) 82%, #fff);
-}
-.agent-points li {
-  display: flex;
-  align-items: baseline;
-  gap: 0.4rem;
-}
-.agent-points li::before {
-  content: "▸";
-  color: var(--agent-color);
-  flex-shrink: 0;
 }
 
 /* What's new — product changelog (keep short) */
@@ -1562,8 +1582,12 @@ h2 {
   .card.span2, .card.span3, .card.span4, .card.span6 {
     grid-column: span 2;
   }
-  .agent-trio {
+  .hl-split {
     grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .hl-split-live {
+    position: static;
   }
   .step:nth-child(even), .step:nth-child(odd) {
     margin-left: 0;
